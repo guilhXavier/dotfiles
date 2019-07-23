@@ -1,9 +1,17 @@
-alias reload = "source ~/.zshrc"
+alias reload="source ~/.zshrc"
 alias _="sudo"
 alias g="git"
-alias rr="rm -rf"
+alias rd="rm -rf"
 
-# Directory traversal
+# Directory navigation
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
+
+alias wp="cd ~/workspace"
+alias bda="cd ~/workspace/bot-dos-amigos"
+
+#npm
+alias ni="npm install"
+alias nu="npm uninstall"
+alias nup="npm update"

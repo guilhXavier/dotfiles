@@ -15,8 +15,9 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-
 source /home/guilhxavier/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $HOME/.alias
+
 fpath=($fpath "/home/guilhxavier/.zfunctions")
 
 autoload -U promptinit; promptinit
