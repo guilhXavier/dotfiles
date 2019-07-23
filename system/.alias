@@ -1,0 +1,9 @@
+alias reload = "source ~/.zshrc"
+alias _="sudo"
+alias g="git"
+alias rr="rm -rf"
+
+# Directory traversal
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."

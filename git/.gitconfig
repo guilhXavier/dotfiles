@@ -1,0 +1,42 @@
+[user]
+			name = guilhXavier
+			email = guilhermetamara5@gmail.com
+[url "https://github.com/"]
+			insteadOf = gh:
+[url "https://gist.github.com/"]
+			insteadOf = gist;
+[alias]
+			#List git config
+			hlp = config --list
+
+			#Pull from origin
+			pfo = pull origin
+			#Add all
+			all = add . --all
+			#Commit
+			co = commit
+			#Push to origin master
+			psom = push origin master
+			#Push to origin dev
+			psod = push origin dev
+
+			#Checkout to new branch
+			nb = checkout -b
+			#Checkout to another branch
+			cb = checkout
+			#Checkout to master
+			cm = checkout master
+			#Checkout to dev
+			cdev = checkout dev
+			#Show all branches
+			pab = branch -av
+			#Delete a branch
+			dbr = branch -D
+
+			#Status
+			st = status
+[merge]
+			log = true
+			ff = false
+[push]
+			default = simple
