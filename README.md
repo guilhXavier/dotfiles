@@ -7,3 +7,6 @@ Meus dotfiles para Ubuntu 19.04(Disco Dingo)
 * Vs Code
 * ZSH
 * Aliases
+* I3wm
+* CAVA
+* Polybar
