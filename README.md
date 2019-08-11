@@ -10,3 +10,5 @@ Meus dotfiles para Ubuntu 19.04(Disco Dingo)
 * I3wm
 * CAVA
 * Polybar
+* CSGO
+* Fish
