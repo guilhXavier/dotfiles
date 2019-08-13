@@ -45,7 +45,7 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec dmenu_run -b -l 5 -p Search -fn "Misc Termsyn" -nb "#1D1F28" -nf "#f7f7f7" -sb "#1E88E5" -sf "#202020"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -187,4 +187,4 @@ exec_always xset fp rehash
 exec_always feh --bg-fill ~/Pictures/123858.jpg
 exec --no-startup-id xautolock -detectsleep -corners +00- -time 10 -locker 'i3lock -i ~/Pictures/123858.jpg -f' 
 exec_always --no-startup-id bash && . ./.profile
-exec_always --no-startup-id compton
+exec_always --no-startup-id compton -b
