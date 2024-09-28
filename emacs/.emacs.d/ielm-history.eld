@@ -1,0 +1,6 @@
+(modus-themes-get-color-value)
+(modus-themes-list-colors-current)
+(modus-themes-contrast 'bg-lavender 'fg-added)
+(modus-themes-get-color-value 'bg-lavender)
+(modus-themes-get-color-value 'fg-added)
+(modus-themes-contrast "#dfcdfa" "#005000")
