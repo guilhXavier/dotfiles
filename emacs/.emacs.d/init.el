@@ -235,6 +235,7 @@
   (dashboard-setup-startup-hook)
   :custom
   (dashboard-center-content t)
+  (dashboard-force-refresh t)
   (dashboard-week-agenda t)
   (dashboard-items '((recents . 5)
 		     (agenda . 5)
