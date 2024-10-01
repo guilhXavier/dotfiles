@@ -97,11 +97,12 @@
   :custom
     (browse-url-new-window-flag t)
   :init
-  (set-face-attribute 'default nil :family "Iosevka Comfy Wide" :height 120 :weight 'regular)
-  (set-face-attribute 'fixed-pitch nil :family "Iosevka Comfy Wide" :height 120 :weight 'medium)
-  (set-face-attribute 'variable-pitch nil :family "Iosevka Comfy Wide" :height 120 :weight 'medium)
+  (set-face-attribute 'default nil :family "Input Mono" :height 120 :weight 'regular)
+  (set-face-attribute 'fixed-pitch nil :family "Input Mono" :height 120 :weight 'medium)
+  (set-face-attribute 'variable-pitch nil :family "Input Mono" :height 120 :weight 'medium)
   (setq initial-major-mode 'fundamental-mode
 	initial-scratch-message "Welcome to Guimacs"
+	initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
 	inhibit-startup-screen t
 	inhibit-startup-echo-area-message t
 	confirm-kill-processes nil
@@ -498,7 +499,7 @@
   (org-src-tab-acts-natively t)
   (org-src-preserve-indentation t)
   (org-highlight-lated-and-related '(latex))
-  (line-spacing 2)
+  (line-spacing 3)
   (org-directory "~/Notes")
   (org-agenda-files '("~/Notes"))
   :config
@@ -734,6 +735,19 @@
 (use-package css-in-js-mode
   :straight '(css-in-js-mode :type git :host github :repo "orzechowskid/tree-sitter-css-in-js"))
 
+(use-package dape
+  :ensure t
+  :defer t
+  :hook
+  ((kill-emacs . dape-breakpoint-save)
+   (after-init . dape-breakpoint-load))
+  :config
+  (setq dape-buffer-window-arrangement 'right)
+  (dape-breakpoint-global-mode)
+  (add-hook 'dape-stopped-hook 'dape-info)
+  (add-hook 'dape-stopped-hook 'dape-repl)
+  (add-hook 'dape-compile-hook 'kill-buffer)
+  (add-hook 'dape-start-hook (lambda () (save-some-buffers t))))
 
 ;;;; * Org-mode Babel
 (use-package ob-shell
