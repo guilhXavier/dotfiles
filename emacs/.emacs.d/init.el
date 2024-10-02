@@ -90,12 +90,14 @@
 (defun gui/update-modeline-color ()
   "Update the modeline color based on buffer modification status."
   (let ((color (gui/resolve-buffer-id-color)))
-    (set-face-attribute 'mode-line-buffer-id nil :foreground color)))
+    (when (not(minibuffer-window-active-p (frame-selected-window)))
+      (set-face-attribute 'mode-line-buffer-id nil :foreground color))))
 
 ;;;; * Emacs defaults
 (use-package emacs
   :custom
-    (browse-url-new-window-flag t)
+  (browse-url-new-window-flag t)
+  (vc-follow-symlinks t)
   :init
   (set-face-attribute 'default nil :family "Input Mono" :height 120 :weight 'regular)
   (set-face-attribute 'fixed-pitch nil :family "Input Mono" :height 120 :weight 'medium)
@@ -270,8 +272,8 @@
   (find-file-hook . gui/update-modeline-color)
   (after-save-hook . gui/update-modeline-color)
   (read-only-mode-hook . gui/update-modeline-color)
-  (window-configuration-change-hook . gui/update-modeline-color))
-
+  (window-configuration-change-hook . gui/update-modeline-color)
+  (post-command-hook . gui/update-modeline-color))
 
 
 (use-package solar
@@ -503,6 +505,7 @@
   (line-spacing 3)
   (org-directory "~/Notes")
   (org-agenda-files '("~/Notes"))
+  (org-default-notes-file (concat org-directory "/capture.org"))
   :config
   (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
   :hook (org-mode-hook . (lambda () (variable-pitch-mode 1))))
@@ -589,7 +592,6 @@
   (olivetti-minimum-body-width 80)
   (olivetti-recall-visual-line-mode-entry-state t))
 
-
 ;;;; * Reading
 (use-package pdf-tools
   :ensure t
@@ -666,7 +668,7 @@
 	 ("[tab]" . copilot-accept-completion)
 	 ("TAB" . copilot-accept-completion))
   :custom
-  (copilot-node-executable "/Users/i568723/.nvm/versions/node/v18.12.1/bin/node"))
+  (copilot-node-executable "/Users/i568723/.nvm/versions/node/v20.17.0/bin/node"))
 
 (use-package copilot-chat
   :straight (:host github :repo "chep/copilot-chat.el" :files ("*.el"))
@@ -848,13 +850,9 @@
   :diminish
   :hook (prog-mode-hook . smartparens-mode))
 
-(use-package rainbow-mode
+(use-package colorful-mode
   :ensure t
-  :defer t
-  :diminish
-  :config
-  (setq rainbow-x-colors nil)
-  :hook (prog-mode-hook . rainbow-mode))
+  :hook (prog-mode . text-mode))
 
 ;;;; * Docker
 (use-package docker
@@ -870,25 +868,18 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(dashboard-agenda-prefix-format " %i %-12:c %s ")
+ '(dashboard-agenda-sort-strategy '(time-up))
  '(dashboard-projects-switch-function 'project-switch-project)
  '(mode-line-format
    '("%e" mode-line-front-space (:propertize ("" "λ:") display (min-width (6.0)))
      mode-line-frame-identification mode-line-buffer-identification "    "
      (project-mode-line project-mode-line-format) (vc-mode vc-mode) "  "
      mode-line-modes mode-line-misc-info mode-line-end-spaces))
- '(package-selected-packages
-   '(scss-mode quelpa-use-package quelpa json-rpc-server mmm-mode json-rpc
-	       git-gutter-fringe+ @ benchmark-init iedit markdown-mode pdf-tools
-	       olivetti org-modern ox-reveal imenu-list xeft org-roam shackle
-	       citar org-ref cdlatex auctex org-special-block-extras
-	       engrave-faces langtool flycheck transpose-frame deadgrep treemacs
-	       cape which-key circadian gcmh diminish vterm vertico treesit-auto
-	       tree-sitter-langs rainbow-delimiters projectile orderless
-	       modus-themes marginalia magit jinx go-mode exec-path-from-shell
-	       embark-consult ef-themes corfu beacon avy))
  '(project-switch-commands
    '((project-find-file "Find file" nil) (deadgrep "Find regexp" 114)
-     (project-find-dir "Find directory" nil) (magit-project-status "Magit" 109))))
+     (project-find-dir "Find directory" nil) (magit-project-status "Magit" 109)
+     (async-shell-command "Shell" 33))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
