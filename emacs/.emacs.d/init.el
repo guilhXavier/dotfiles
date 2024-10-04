@@ -856,12 +856,14 @@
 
 (use-package pulsar
   :ensure t
-  :defer t
+  :load-path "elpa/pulsar-1.1.0"
   :config
   (pulsar-global-mode 1)
   :custom
   (pulsar-face 'pulsar-magenta)
-  (pulsar-highlight-face 'pulsar-yellow))
+  (pulsar-highlight-face 'pulsar-yellow)
+  :hook
+  (window-state-change-hook . pulsar-pulse-line))
 ;;;; * Docker
 (use-package docker
   :ensure t
