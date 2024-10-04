@@ -854,6 +854,14 @@
   :ensure t
   :hook (prog-mode . text-mode))
 
+(use-package pulsar
+  :ensure t
+  :defer t
+  :config
+  (pulsar-global-mode 1)
+  :custom
+  (pulsar-face 'pulsar-magenta)
+  (pulsar-highlight-face 'pulsar-yellow))
 ;;;; * Docker
 (use-package docker
   :ensure t
