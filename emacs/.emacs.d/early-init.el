@@ -9,7 +9,7 @@
 
 (setq gc-cons-threshold most-positive-fixnum
       load-prefer-newer noninteractive
-      package-enable-at-startup nil
+      package-enable-at-startup t
       package-quickstart t
       frame-inhibit-implied-resize t
       frame-resize-pixelwise t

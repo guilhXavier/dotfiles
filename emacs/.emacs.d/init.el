@@ -35,8 +35,7 @@
       '(("melpa" . "https://melpa.org/packages/")
 	("elpa" . "https://elpa.gnu.org/packages/")))
 
-(unless (bound-and-true-p package--initialized)
-  (package-initialize))
+(package-initialize)
 (use-package diminish :ensure t :after use-package)
 
 ;;;; * Guimacs
@@ -91,7 +90,7 @@
   "Update the modeline color based on buffer modification status."
   (let ((color (gui/resolve-buffer-id-color)))
     (when (not(minibuffer-window-active-p (frame-selected-window)))
-      (set-face-attribute 'mode-line-buffer-id nil :foreground color))))
+      (face-remap-add-relative 'mode-line-buffer-id :foreground color))))
 
 ;;;; * Emacs defaults
 (use-package emacs
@@ -112,6 +111,7 @@
 	read-process-output-max (* 1024 1024)
 	create-lockfiles nil
 	display-time-24hr-format t
+	display-time-day-and-date t
   	ring-bell-function 'ignore
 	insert-directory-program "gls"
 	warning-minimum-level :error
@@ -582,6 +582,19 @@
   :ensure t
   :defer t
   :hook (text-mode-hook . hl-todo-mode))
+
+(use-package calfw
+  :ensure t)
+
+(use-package calfw-org
+  :ensure t
+  :bind
+  ("C-c c" . cfw:open-org-calendar))
+
+(use-package brazil-holidays
+  :straight (:type git :host github :repo "luksamuk/brazil-holidays")
+  :custom
+  (calendar-holidays holiday-brazil-holidays))
 ;;;; * Focus
 (use-package olivetti
   :ensure t
@@ -854,16 +867,24 @@
   :ensure t
   :hook (prog-mode . text-mode))
 
-(use-package pulsar
-  :ensure t
-  :load-path "elpa/pulsar-1.1.0"
+(use-package pulsic
+  :init
+  (unless (package-installed-p 'pulsic)
+    (package-vc-install
+     '(pulsic :vc-backend Git
+              :url "https://github.com/ichernyshovvv/pulsic.el")))
   :config
-  (pulsar-global-mode 1)
+  (pulsic-mode 1)
   :custom
-  (pulsar-face 'pulsar-magenta)
-  (pulsar-highlight-face 'pulsar-yellow)
-  :hook
-  (window-state-change-hook . pulsar-pulse-line))
+  (pulsic-duration 0.5)
+  (pulsic-predicate
+   (lambda ()
+     (not
+      (or (memq last-command
+                '( chloe-clock-in-dwim chloe-clock-in
+                   indent-for-tab-command))
+          (derived-mode-p 'telega-chat-mode 'enlight-mode)
+          (minibufferp))))))
 ;;;; * Docker
 (use-package docker
   :ensure t
@@ -886,6 +907,8 @@
      mode-line-frame-identification mode-line-buffer-identification "    "
      (project-mode-line project-mode-line-format) (vc-mode vc-mode) "  "
      mode-line-modes mode-line-misc-info mode-line-end-spaces))
+ '(package-vc-selected-packages
+   '((pulsic :vc-backend Git :url "https://github.com/ichernyshovvv/pulsic.el")))
  '(project-switch-commands
    '((project-find-file "Find file" nil) (deadgrep "Find regexp" 114)
      (project-find-dir "Find directory" nil) (magit-project-status "Magit" 109)
