@@ -100,7 +100,7 @@
   :init
   (set-face-attribute 'default nil :family "Input Mono" :height 120 :weight 'regular)
   (set-face-attribute 'fixed-pitch nil :family "Input Mono" :height 120 :weight 'medium)
-  (set-face-attribute 'variable-pitch nil :family "Input Mono" :height 120 :weight 'medium)
+  (set-face-attribute 'variable-pitch nil :family "Input Serif" :height 120 :weight 'medium)
   (setq initial-major-mode 'fundamental-mode
 	initial-scratch-message "Welcome to Guimacs"
 	initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
@@ -217,8 +217,7 @@
   :ensure nil
   :config
   (setq project-vc-ignores '("target/" "bin/" "obj/")
-	project-vc-extra-root-markers '("package.json"
-					"README.org"
+	project-vc-extra-root-markers '("README.org"
 					"README.md")))
 
 ;;;; * Benchmark
