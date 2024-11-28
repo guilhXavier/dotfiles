@@ -92,10 +92,32 @@
     (when (not(minibuffer-window-active-p (frame-selected-window)))
       (face-remap-add-relative 'mode-line-buffer-id :foreground color))))
 
+(defun gui/fzf-find-file (&optional dir)
+  "Find a file using fzf in a project root."
+  (interactive)
+  (let ((default-directory (or dir (project-root (project-current t)))))
+    (fzf-find-file-in-dir default-directory)))
+
+(defun gui/fzf-grep ()
+  "Grep using fzf in a project root."
+  (interactive)
+  (let ((default-directory (project-root (project-current t))))
+    (fzf-grep-in-dir default-directory)))
+
+(defun gui/diary-cyclic-entries (n year month day)
+  "Return a cyclic diary entry that repeats every N days starting from YEAR, MONTH, DAY, but only on weekdays."
+  (let ((date (calendar-absolute-from-gregorian (list month day year))))
+    (if (and (zerop (% (- (calendar-absolute-from-gregorian date)
+                          (calendar-absolute-from-gregorian (calendar-current-date)))
+                       n))
+             (not (member (calendar-day-of-week date) '(0 6))))
+        "Weekday appointment at 10:00 AM")))
+
 ;;;; * Emacs defaults
 (use-package emacs
   :custom
   (browse-url-new-window-flag t)
+  (diary-file "~/Notes/diary")
   (vc-follow-symlinks t)
   :init
   (set-face-attribute 'default nil :family "Input Mono" :height 120 :weight 'regular)
@@ -109,11 +131,14 @@
 	confirm-kill-processes nil
 	use-short-answers t
 	read-process-output-max (* 1024 1024)
+	mac-command-modifier 'meta
 	create-lockfiles nil
 	display-time-24hr-format t
 	display-time-day-and-date t
   	ring-bell-function 'ignore
 	insert-directory-program "gls"
+	appt-message-warning-time 60
+	appt-display-interval 15
 	warning-minimum-level :error
 	tab-bar-tab-name-function (lambda () (buffer-name)))
   (setq-default cursor-type 'bar
@@ -128,6 +153,9 @@
   (column-number-mode 1)
   (pixel-scroll-precision-mode 1)
   (display-time)
+  (appt-activate t)
+  (if (eq system-type 'darwin)
+      (setq appt-disp-window-function (lambda (remaining new-time msg) (org-show-notification msg))))
   (dolist (mapping '((python-mode . python-ts-mode)
 		     (css-mode . css-ts-mode)
 		     (js-mode . js-ts-mode)
@@ -298,7 +326,7 @@
   :bind
   ("C-x C-b" . persp-list-buffers)
   :custom
-  (persp-modestring-dividers '("(" ")" ","))
+  (persp-modestring-dividers '("(" ") " ","))
   (persp-mode-prefix-key (kbd "C-c M-p"))
   :init
   (persp-mode))
@@ -363,6 +391,19 @@
   (treemacs-width 24)
   :bind ("C-c t" . treemacs))
 
+(use-package fzf
+  :ensure t
+  :defer t
+  :bind (("C-c f f" . fzf)
+	 ("C-c f b" . fzf-switch-buffer)
+	 ("C-c f r" . fzf-grep))
+  :custom
+  (fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll")
+  (fzf/executable "fzf")
+  (fzf/position-bottom t)
+  (fzf/window-height 15)
+  (fzf/grep-command "rg --no-heading -nH"))
+
 (use-package deadgrep
   :ensure t
   :defer t
@@ -382,7 +423,6 @@
   :bind
   (:map outline-minor-mode-map
 	("C-c s" . outline-toggle-children)
-	("C-c f" . outline-hide-sublevels)
 	("C-c e" . outline-show-all)))
 
 (use-package casual-calc
@@ -455,8 +495,7 @@
 	     rotate-frame
 	     rotate-frame-clockwise
 	     rotate-frame-anticlockwise)
-  :bind (("C-c f" . flop-frame)
-	 ("C-c r" . rotate-frame-clockwise)))
+  :bind (("C-c r" . rotate-frame-clockwise)))
 
 ;;;; * Spell checking
 (use-package jinx
@@ -492,6 +531,7 @@
   :diminish "Org"
   :custom
   (org-imenu-depth 7)
+  (org-agenda-to-appt t)
   (org-fontify-done-headline nil)
   (org-fontify-quote-and-verse-blocks t)
   (org-fontify-whole-heading-line nil)
@@ -505,9 +545,14 @@
   (org-directory "~/Notes")
   (org-agenda-files '("~/Notes"))
   (org-default-notes-file (concat org-directory "/capture.org"))
+  (org-clock-persist 'history)
   :config
   (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
-  :hook (org-mode-hook . (lambda () (variable-pitch-mode 1))))
+  (org-clock-persistence-insinuate)
+  :hook
+  (org-mode-hook . (lambda () (variable-pitch-mode 1)))
+  (org-agenda-after-show-hook . (lambda () (org-agenda-to-appt t)))
+  (after-save-hook . (lambda () (when (eq major-mode 'org-mode) (org-agenda-to-appt t)))))
 
 (use-package org-alert
   :ensure t
@@ -778,7 +823,6 @@
   :defer t
   :commands (org-babel-execute:elisp
 	     org-babel-expand-body:elisp
-
 	     org-babel-execute:emacs-lisp
 	     org-babel-expand-body:emacs-lisp))
 
@@ -892,6 +936,13 @@
 (use-package dockerfile-mode
   :ensure t
   :defer t)
+(use-package kubernetes
+  :ensure t
+  :defer t
+  :commands (kubernetes-overview)
+  :config
+  (setq kubernetes-poll-frequency 3600
+	kubernetes-redraw-frequency 3600))
 ;;;; * Custom variables
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -906,12 +957,18 @@
      mode-line-frame-identification mode-line-buffer-identification "    "
      (project-mode-line project-mode-line-format) (vc-mode vc-mode) "  "
      mode-line-modes mode-line-misc-info mode-line-end-spaces))
+ '(org-agenda-include-diary t)
+ '(org-agenda-start-on-weekday 0)
+ '(org-habit-show-all-today nil)
+ '(org-modules
+   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc
+	     ol-mhe ol-rmail ol-w3m))
  '(package-vc-selected-packages
    '((pulsic :vc-backend Git :url "https://github.com/ichernyshovvv/pulsic.el")))
  '(project-switch-commands
-   '((project-find-file "Find file" nil) (deadgrep "Find regexp" 114)
-     (project-find-dir "Find directory" nil) (magit-project-status "Magit" 109)
-     (async-shell-command "Shell" 33))))
+   '((gui/fzf-find-file "Find file" 102) (gui/fzf-grep "Find regexp" 114)
+     (project-find-dir "Find directory" nil) (magit-project-status "Magit" 109)))
+ '(sudoku-level 'easy))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
