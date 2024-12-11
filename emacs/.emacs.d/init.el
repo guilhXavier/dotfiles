@@ -851,6 +851,16 @@
   (("C-<" . mc/mark-all-like-this-dwim)
    ("C->" . mc/mark-all-dwim)))
 
+(use-package undo-fu
+  :ensure t
+  :defer t
+  :diminish
+  :config
+  (global-unset-key (kbd "C-z"))
+  :bind
+  ("C-z" . undo-fu-only-undo)
+  ("C-S-z" . undo-fu-only-redo))
+
 (use-package tree-sitter
   :ensure t
   :defer t
