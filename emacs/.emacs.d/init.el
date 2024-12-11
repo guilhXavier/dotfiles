@@ -757,12 +757,16 @@
 	 (tsx-ts-mode-hook . prettier-mode)
 	 (css-ts-mode-hook . prettier-mode)
 	 (json-ts-mode-hook . prettier-mode)
+	 (go-ts-mode-hook . eglot-ensure)
 	 (latex-mode-hook . eglot-ensure))
   :bind (("C-c l b" . eglot-format-buffer)
 	 ("C-c l a" . eglot-code-actions)
 	 ("C-c l e" . eglot-reconnect)
 	 ("C-c l r" . eglot-rename)))
 
+(use-package yaml-pro
+  :ensure t
+  :defer t)
 (use-package elisp-mode
   :config
   :diminish "EL")
@@ -870,6 +874,7 @@
        (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
        (json . ("https://github.com/tree-sitter/tree-sitter-json"))
        (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
+       (yaml . ("https://github.com/tree-sitter-grammars/tree-sitter-yaml"))
        (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))))
   (push '("\\.ts\\(x\\)?\\'" . tsx-ts-mode) auto-mode-alist)
   :config
