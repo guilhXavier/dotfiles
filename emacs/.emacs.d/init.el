@@ -121,7 +121,7 @@
   (vc-follow-symlinks t)
   :init
   (set-face-attribute 'default nil :family "Input Mono" :height 120 :weight 'regular)
-  (set-face-attribute 'fixed-pitch nil :family "Input Mono" :height 120 :weight 'medium)
+  (set-face-attribute 'fixed-pitch nil :family "Input Mono" :height 120 :weight 'regular)
   (set-face-attribute 'variable-pitch nil :family "Input Serif" :height 120 :weight 'medium)
   (setq initial-major-mode 'fundamental-mode
 	initial-scratch-message "Welcome to Guimacs"
@@ -855,8 +855,6 @@
   :ensure t
   :defer t
   :diminish
-  :config
-  (global-unset-key (kbd "C-z"))
   :bind
   ("C-z" . undo-fu-only-undo)
   ("C-S-z" . undo-fu-only-redo))
@@ -886,7 +884,9 @@
        (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
        (yaml . ("https://github.com/tree-sitter-grammars/tree-sitter-yaml"))
        (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))))
-  (push '("\\.ts\\(x\\)?\\'" . tsx-ts-mode) auto-mode-alist)
+  :mode
+  ("\\.ts\\(x\\)?\\'" . tsx-ts-mode)
+  ("\\.go\\'" . go-ts-mode)
   :config
   (defun gui/treesit-install-all-languages ()
     "Install all languages specified by `treesit-language-source-alist'."
