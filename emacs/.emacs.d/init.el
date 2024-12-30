@@ -477,6 +477,13 @@
   :bind (:map symbol-overlay-map
               ("C-o" . casual-symbol-overlay-tmenu))
   :after (symbol-overlay))
+
+(use-package golden-ration
+  :ensure t
+  :defer t
+  :init
+  (golden-ratio-mode 1))
+
 ;;;; * Windows & Movement
 (use-package windmove
   :ensure nil
