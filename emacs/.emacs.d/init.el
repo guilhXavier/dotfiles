@@ -166,6 +166,7 @@
     (add-to-list 'major-mode-remap-alist mapping))
   :custom
   (column-number-mode nil)
+  :bind ("C-c C-q" . info-apropos)
   :hook
   (text-mode-hook . auto-fill-mode)
   (flymake-after-save-hook . eglot-format-buffer)
@@ -200,7 +201,8 @@
   :custom
   (dired-use-ls-dired t)
   (dired-listing-switches "-alv --group-directories-first")
-  :hook (dired-mode-hook . (lambda () (dired-hide-details-mode 1))))
+  :hook ((dired-mode-hook . (lambda () (dired-hide-details-mode 1)))
+	 (dired-mode-hook . dired-omit-mode)))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -480,7 +482,6 @@
 
 (use-package golden-ration
   :ensure t
-  :defer t
   :init
   (golden-ratio-mode 1))
 
@@ -553,6 +554,9 @@
   (org-agenda-files '("~/Notes"))
   (org-default-notes-file (concat org-directory "/capture.org"))
   (org-clock-persist 'history)
+  (org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROG(p@/!)" "HOLD(h)"
+				 "|"
+				 "DONE(d/!)" "FAIL(f@/!)")))
   :config
   (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
   (org-clock-persistence-insinuate)
