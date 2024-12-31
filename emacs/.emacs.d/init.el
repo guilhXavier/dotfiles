@@ -226,7 +226,8 @@
   (dired-use-ls-dired t)
   (dired-listing-switches "-alv --group-directories-first")
   :hook ((dired-mode-hook . (lambda () (dired-hide-details-mode 1)))
-	 (dired-mode-hook . dired-omit-mode)))
+	 (dired-mode-hook . dired-omit-mode)
+	 (dired-mode-hook . nerd-icons-dired-mode)))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -289,15 +290,35 @@
   :config
   (dashboard-setup-startup-hook)
   :custom
+  (dashboard-startup-banner "~/SAPDevelop/dotfiles/emacs/.emacs.d/static/inter-removebg.png")
   (dashboard-center-content t)
   (dashboard-force-refresh t)
   (dashboard-week-agenda t)
-  (dashboard-items '((recents . 5)
-		     (agenda . 5)
-		     (bookmarks . 5)
-		     (projects . 5)
-		     (registers . 5)))
+  (dashboard-vertically-center-content t)
+  (dashboard-items '())
   (dashboard-banner-logo-title "Welcome to Guimacs!"))
+
+(use-package nerd-icons
+  :ensure t
+  :defer t)
+
+(use-package nerd-icons-completion
+  :ensure t
+  :defer t
+  :after marginalia
+  :hook (marginalia-mode-hook . nerd-icons-completion-marginalia-setup))
+
+(use-package nerd-icons-corfu
+  :ensure t
+  :defer t
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package nerd-icons-dired
+  :ensure t
+  :defer t
+  :hook (dired-mode . nerd-icons-dired-mode))
 
 (use-package modus-themes
   :pin melpa
@@ -308,7 +329,7 @@
 	modus-themes-bold-constructs t
 	modus-themes-mixed-fonts t
 	modus-themes-variable-pitch-ui nil
-	modus-themes-common-palette-overrides '((bg-mode-line-active bg-lavender)
+	modus-themes-common-palette-overrides '((bg-mode-line-active bg-graph-red-0)
 						(bg-mode-line-inactive bg-dim)
 						(border-mode-line-inactive bg-inactive)
 						(fringe subtle)
