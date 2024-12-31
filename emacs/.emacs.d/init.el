@@ -146,7 +146,7 @@
                (allow-no-window . t)))
   (set-face-attribute 'default nil :family "Input Mono" :height 120 :weight 'regular)
   (set-face-attribute 'fixed-pitch nil :family "Input Mono" :height 120 :weight 'regular)
-  (set-face-attribute 'variable-pitch nil :family "Open Serif" :height 160 :weight 'bold)
+  (set-face-attribute 'variable-pitch nil :family "Roboto Slab" :height 160 :weight 'regular)
   (setq initial-major-mode 'fundamental-mode
 	initial-scratch-message "Welcome to Guimacs"
 	initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
@@ -353,7 +353,7 @@
 						(fringe subtle)
 						(bg-paren-match bg-yellow-intense)
 						(custom-set-faces
-						 '(mode-line ((t :family "Iosevka Comfy Wide" :height 100 :weight 'regular))))))
+						 '(mode-line ((t :family "Input Mono" :height 100 :weight 'regular))))))
   (setq modus-themes-headings
 	(quote ((1 . (overline variable-pitch 1.4))
 		(2 . (overline variable-pitch 1.25))
