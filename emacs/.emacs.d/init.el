@@ -141,7 +141,7 @@
   (vc-follow-symlinks t)
   :init
   (add-to-list 'display-buffer-alist
-             '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
+             '("\\`\\*\\(Warnings\\|Compile-Log\\|Fancy Diary Entries\\)\\*\\'"
                (display-buffer-no-window)
                (allow-no-window . t)))
   (set-face-attribute 'default nil :family "Input Mono" :height 120 :weight 'regular)
@@ -196,6 +196,10 @@
   (flymake-after-save-hook . eglot-format-buffer)
   (find-file-hook . gui/enable-init-mode-for-init-file))
 
+(use-package delsel
+  :ensure nil
+  :hook (after-init-hook . delete-selection-mode))
+
 (use-package gcmh
   :ensure t
   :diminish gcmh-mode
@@ -224,10 +228,23 @@
     (setq insert-directory-program "gls"))
   :custom
   (dired-use-ls-dired t)
+  (dired-recursive-copies 'always)
+  (dired-recursive-deletes 'always)
+  (dired-dwim-target t)
   (dired-listing-switches "-alv --group-directories-first")
   :hook ((dired-mode-hook . (lambda () (dired-hide-details-mode 1)))
 	 (dired-mode-hook . dired-omit-mode)
 	 (dired-mode-hook . nerd-icons-dired-mode)))
+
+(use-package dired-subtree
+  :ensure t
+  :defer t
+  :after dired
+  :bind (:map dired-mode-map
+	      ("<tab>" . dired-subtree-toggle)
+	      ("TAB" . dired-subtree-toggle)
+	      ("<backtab>" . dired-subtree-remove)
+	      ("S-TAB" . dired-subtree-remove)))
 
 (use-package exec-path-from-shell
   :ensure t
