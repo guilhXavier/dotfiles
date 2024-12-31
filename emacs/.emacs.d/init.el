@@ -140,6 +140,10 @@
   (diary-file "~/Notes/diary")
   (vc-follow-symlinks t)
   :init
+  (add-to-list 'display-buffer-alist
+             '("\\`\\*\\(Warnings\\|Compile-Log\\)\\*\\'"
+               (display-buffer-no-window)
+               (allow-no-window . t)))
   (set-face-attribute 'default nil :family "Input Mono" :height 120 :weight 'regular)
   (set-face-attribute 'fixed-pitch nil :family "Input Mono" :height 120 :weight 'regular)
   (set-face-attribute 'variable-pitch nil :family "Input Serif" :height 120 :weight 'medium)
