@@ -294,6 +294,7 @@
   (dashboard-center-content t)
   (dashboard-force-refresh t)
   (dashboard-week-agenda t)
+  (dashboard-footer-messages '("Vem com a banda!"))
   (dashboard-vertically-center-content t)
   (dashboard-items '())
   (dashboard-banner-logo-title "Welcome to Guimacs!"))
