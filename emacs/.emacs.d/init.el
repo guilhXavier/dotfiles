@@ -525,7 +525,7 @@
               ("C-o" . casual-symbol-overlay-tmenu))
   :after (symbol-overlay))
 
-(use-package golden-ration
+(use-package golden-ratio
   :ensure t
   :init
   (golden-ratio-mode 1))
@@ -597,6 +597,8 @@
   (line-spacing 3)
   (org-directory "~/Notes")
   (org-agenda-files '("~/Notes"))
+  (org-startup-folded t)
+  (org-startup-indented t)
   (org-default-notes-file (concat org-directory "/capture.org"))
   (org-clock-persist 'history)
   (org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "PROG(p@/!)" "HOLD(h)"
@@ -623,6 +625,13 @@
   :ensure t
   :defer t
   :hook (org-mode-hook . org-special-block-extras-mode))
+
+(use-package org-superstar
+  :ensure t
+  :defer t
+  :custom
+  (org-superstar-headline-bullets-list  '("α" "β" "γ" "δ" "ε"))
+  :hook (org-mode-hook . org-superstar-mode))
 
 (use-package shackle
   :ensure t
@@ -897,7 +906,7 @@
 (use-package verb
   :ensure t
   :config (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
-;;;; * QoL
+;;;; * Quality of Life
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (use-package multiple-cursors
@@ -999,6 +1008,10 @@
                    indent-for-tab-command))
           (derived-mode-p 'telega-chat-mode 'enlight-mode)
           (minibufferp))))))
+
+(use-package spacious-padding
+  :ensure t
+  :config (spacious-padding-mode 1))
 ;;;; * Docker
 (use-package docker
   :ensure t
