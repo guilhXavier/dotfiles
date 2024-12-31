@@ -78,17 +78,38 @@
       (pop-to-buffer copilot-chat--prompt-buffer)
     (message "Copilot chat prompt not available")))
 
+(defun gui/get-enabled-theme ()
+  "Get the currently loaded theme"
+  (symbol-name (car custom-enabled-themes)))
 
-(defun gui/resolve-buffer-id-color ()
+(defconst gui/buffer-id-dark-bg-alist '((:modified . rainbow-6)
+					(:readonly . yellow-intense)
+					(:default . fg-main))
+  "Alist for foreground buffer name colors while in a dark mode.")
+
+(defconst gui/buffer-id-light-bg-alist '((:modified . cyan)
+					 (:readonly . green)
+					 (:default . fg-main))
+  "Alist for foreground buffer name colors while in light mode.")
+
+
+(defun gui/resolve-color-map ()
+  "Resolve the correct color map for the buffer name."
+  (let ((colors (if (string= (gui/get-enabled-theme) "modus-vivendi")
+		    gui/buffer-id-dark-bg-alist
+		  gui/buffer-id-light-bg-alist)))
+    (gui/resolve-buffer-id-color colors)))
+
+
+(defun gui/resolve-buffer-id-color (color-map)
   "Resolve the correct color for the buffer name."
-  (cond ((string= (buffer-name (window-buffer)) "*dashboard*") (modus-themes-get-color-value 'rainbow-4))
-	(buffer-read-only (modus-themes-get-color-value 'rainbow-4))
-	((buffer-modified-p (window-buffer)) (modus-themes-get-color-value 'rainbow-1))
+  (cond (buffer-read-only (modus-themes-get-color-value (cdr (assoc :readonly color-map))))
+	((buffer-modified-p (window-buffer)) (modus-themes-get-color-value (cdr (assoc :modified color-map))))
 	(t (modus-themes-get-color-value 'fg-main))))
 
 (defun gui/update-modeline-color ()
   "Update the modeline color based on buffer modification status."
-  (let ((color (gui/resolve-buffer-id-color)))
+  (let ((color (gui/resolve-color-map)))
     (when (not(minibuffer-window-active-p (frame-selected-window)))
       (face-remap-add-relative 'mode-line-buffer-id :foreground color))))
 
