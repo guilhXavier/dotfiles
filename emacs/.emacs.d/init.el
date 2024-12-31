@@ -92,13 +92,22 @@
 					 (:default . fg-main))
   "Alist for foreground buffer name colors while in light mode.")
 
+(defun gui/resolve-appt-color ()
+  "Pick the correct colors for the appt' and persp faces."
+  (if (string= (gui/get-enabled-theme) "modus-vivendi")
+      (progn
+        (face-remap-add-relative 'persp-selected-face :foreground (modus-themes-get-color-value 'yellow-intense))
+        (face-remap-add-relative 'appt-notification :foreground (modus-themes-get-color-value 'yellow-intense)))
+    (progn
+      (face-remap-add-relative 'persp-selected-face :foreground (modus-themes-get-color-value 'bg-graph-green-1))
+      (face-remap-add-relative 'appt-notification :foreground (modus-themes-get-color-value 'bg-graph-green-1)))))
+
 (defun gui/resolve-color-map ()
   "Resolve the correct color map for the buffer name."
   (let ((colors (if (string= (gui/get-enabled-theme) "modus-vivendi")
 		    gui/buffer-id-dark-bg-alist
 		  gui/buffer-id-light-bg-alist)))
     (gui/resolve-buffer-id-color colors)))
-
 
 (defun gui/resolve-buffer-id-color (color-map)
   "Resolve the correct color for the buffer name."
@@ -110,6 +119,7 @@
   "Update the modeline color based on buffer modification status."
   (let ((color (gui/resolve-color-map)))
     (when (not(minibuffer-window-active-p (frame-selected-window)))
+      (gui/resolve-appt-color)
       (face-remap-add-relative 'mode-line-buffer-id :foreground color))))
 
 (defun gui/fzf-find-file (&optional dir)
@@ -1003,6 +1013,12 @@
   :defer t
   :diminish
   :hook (prog-mode-hook . smartparens-mode))
+
+(use-package expand-region
+  :ensure t
+  :defer t
+  :diminish
+  :bind ("C-=" . er/expand-region))
 
 (use-package colorful-mode
   :ensure t
