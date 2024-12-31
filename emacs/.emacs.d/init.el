@@ -146,7 +146,7 @@
                (allow-no-window . t)))
   (set-face-attribute 'default nil :family "Input Mono" :height 120 :weight 'regular)
   (set-face-attribute 'fixed-pitch nil :family "Input Mono" :height 120 :weight 'regular)
-  (set-face-attribute 'variable-pitch nil :family "Input Serif" :height 120 :weight 'medium)
+  (set-face-attribute 'variable-pitch nil :family "Open Serif" :height 160 :weight 'bold)
   (setq initial-major-mode 'fundamental-mode
 	initial-scratch-message "Welcome to Guimacs"
 	initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
