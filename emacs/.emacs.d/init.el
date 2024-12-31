@@ -87,11 +87,10 @@
 					(:default . fg-main))
   "Alist for foreground buffer name colors while in a dark mode.")
 
-(defconst gui/buffer-id-light-bg-alist '((:modified . cyan)
-					 (:readonly . green)
+(defconst gui/buffer-id-light-bg-alist '((:modified . keybind)
+					 (:readonly . bg-graph-green-1)
 					 (:default . fg-main))
   "Alist for foreground buffer name colors while in light mode.")
-
 
 (defun gui/resolve-color-map ()
   "Resolve the correct color map for the buffer name."
