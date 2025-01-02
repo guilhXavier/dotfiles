@@ -158,7 +158,7 @@
   (set-face-attribute 'fixed-pitch nil :family "Input Mono" :height 120 :weight 'regular)
   (set-face-attribute 'variable-pitch nil :family "Roboto Slab" :height 160 :weight 'regular)
   (setq initial-major-mode 'fundamental-mode
-	initial-scratch-message "Welcome to Guimacs"
+	initial-scratch-message "Guimacs"
 	initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
 	inhibit-startup-screen t
 	inhibit-startup-echo-area-message t
@@ -200,7 +200,10 @@
     (add-to-list 'major-mode-remap-alist mapping))
   :custom
   (column-number-mode nil)
-  :bind ("C-c C-q" . info-apropos)
+  :bind (("C-c C-r" . recentf)
+	 ("C-c TAB"  . info-apropos)
+	 ("C-c g" . magit)
+	 ("C-c C-q C-q" . gui/quit-emacs))
   :hook
   (text-mode-hook . auto-fill-mode)
   (flymake-after-save-hook . eglot-format-buffer)
@@ -209,6 +212,10 @@
 (use-package delsel
   :ensure nil
   :hook (after-init-hook . delete-selection-mode))
+
+(use-package eww
+  :ensure nil
+  :hook (eww-after-render-hook . eww-readable))
 
 (use-package gcmh
   :ensure t
@@ -357,7 +364,7 @@
 	modus-themes-bold-constructs t
 	modus-themes-mixed-fonts t
 	modus-themes-variable-pitch-ui nil
-	modus-themes-common-palette-overrides '((bg-mode-line-active bg-graph-red-0)
+	modus-themes-common-palette-overrides '((bg-mode-line-active bg-removed-fringe)
 						(bg-mode-line-inactive bg-dim)
 						(border-mode-line-inactive bg-inactive)
 						(fringe subtle)
