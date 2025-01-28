@@ -126,13 +126,13 @@
   "Find a file using fzf in a project root."
   (interactive)
   (let ((default-directory (or dir (project-root (project-current t)))))
-    (fzf-find-file-in-dir default-directory)))
+    (fzf-git-files)))
 
 (defun gui/fzf-grep ()
   "Grep using fzf in a project root."
   (interactive)
   (let ((default-directory (project-root (project-current t))))
-    (fzf-grep-in-dir default-directory)))
+    (fzf-git-grep)))
 
 (defun gui/diary-cyclic-entries (n year month day)
   "Return a cyclic diary entry that repeats every N days starting from YEAR, MONTH, DAY, but only on weekdays."
@@ -154,6 +154,7 @@
              '("\\`\\*\\(Warnings\\|Compile-Log\\|Fancy Diary Entries\\)\\*\\'"
                (display-buffer-no-window)
                (allow-no-window . t)))
+  (add-to-list 'auto-mode-alist '("\\.yaml\\'" . conf-mode))
   (set-face-attribute 'default nil :family "Input Mono" :height 120 :weight 'regular)
   (set-face-attribute 'fixed-pitch nil :family "Input Mono" :height 120 :weight 'regular)
   (set-face-attribute 'variable-pitch nil :family "Roboto Slab" :height 160 :weight 'regular)
@@ -203,6 +204,7 @@
   :bind (("C-c C-r" . recentf)
 	 ("C-c TAB"  . info-apropos)
 	 ("C-c g" . magit)
+	 ("C-c i" . imenu)
 	 ("C-c C-q C-q" . gui/quit-emacs))
   :hook
   (text-mode-hook . auto-fill-mode)
@@ -324,7 +326,7 @@
   :config
   (dashboard-setup-startup-hook)
   :custom
-  (dashboard-startup-banner "~/SAPDevelop/dotfiles/emacs/.emacs.d/static/inter-removebg.png")
+  (dashboard-startup-banner "~/.emacs.d/static/inter-removebg.png")
   (dashboard-center-content t)
   (dashboard-force-refresh t)
   (dashboard-week-agenda t)
@@ -477,14 +479,14 @@
   :ensure t
   :defer t
   :bind (("C-c f f" . fzf)
-	 ("C-c f b" . fzf-switch-buffer)
 	 ("C-c f r" . fzf-grep))
   :custom
-  (fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll")
+  (fzf/args "--ansi --color dark --print-query --margin=1,0 --no-hscroll")
   (fzf/executable "fzf")
+  (fzf/git-grep-args "-i --line-number --color=always %s")
   (fzf/position-bottom t)
   (fzf/window-height 15)
-  (fzf/grep-command "rg --no-heading -nH"))
+  (fzf/grep-command "rg --color=always --line-number"))
 
 (use-package deadgrep
   :ensure t
@@ -494,10 +496,9 @@
 (use-package avy
   :ensure t
   :defer t
-  :bind (("M-g l" . avy-goto-line)
-	 ("M-g e" . avy-goto-word-0)
-	 ("M-g w" . avy-goto-word-1)
-	 ("M-g t" . avy-goto-char-timer)))
+  :bind (("C-c a l" . avy-goto-line)
+	 ("C-c a w" . avy-goto-word-0)
+	 ("C-c a t" . avy-goto-char-timer)))
 
 (use-package outline
   :diminish outline-minor-mode
@@ -551,9 +552,6 @@
               ("S" . casual-bookmarks-sortby-tmenu)
               ("J" . bookmark-jump))
   :after (bookmark))
-(use-package casual-avy
-  :ensure t
-  :bind ("M-g" . casual-avy-tmenu))
 (use-package casual-symbol-overlay
   :ensure nil
   :bind (:map symbol-overlay-map
@@ -739,6 +737,15 @@
   :straight (:type git :host github :repo "luksamuk/brazil-holidays")
   :custom
   (calendar-holidays holiday-brazil-holidays))
+
+(use-package org-ref
+  :ensure t
+  :defer t
+  :diminish)
+
+(use-package auctex
+  :ensure t
+  :defer t)
 ;;;; * Focus
 (use-package olivetti
   :ensure t
@@ -749,6 +756,9 @@
   (olivetti-minimum-body-width 80)
   (olivetti-recall-visual-line-mode-entry-state t))
 
+(use-package logos
+  :ensure t
+  :demand t)
 ;;;; * Reading
 (use-package pdf-tools
   :ensure t
@@ -820,6 +830,7 @@
 (use-package copilot
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :ensure t
+  :config (add-to-list 'copilot-major-mode-alist '("u"))
   :hook (prog-mode-hook . copilot-mode)
   :bind (:map copilot-completion-map
 	 ("[tab]" . copilot-accept-completion)
@@ -956,8 +967,8 @@
   :defer t
   :diminish
   :bind
-  ("C-z" . undo-fu-only-undo)
-  ("C-S-z" . undo-fu-only-redo))
+  ("M-z" . undo-fu-only-undo)
+  ("M-Z" . undo-fu-only-redo))
 
 (use-package tree-sitter
   :ensure t
@@ -1053,6 +1064,7 @@
 (use-package spacious-padding
   :ensure t
   :config (spacious-padding-mode 1))
+
 ;;;; * Docker
 (use-package docker
   :ensure t
