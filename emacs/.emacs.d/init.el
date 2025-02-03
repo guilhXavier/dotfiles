@@ -277,14 +277,6 @@
   :defer 2
   :diminish auto-revert-mode)
 
-(use-package vterm
-  :ensure t
-  :defer t)
-
-(use-package multi-vterm
-  :ensure t
-  :defer t)
-
 (use-package vertico
   :ensure t
   :pin elpa
