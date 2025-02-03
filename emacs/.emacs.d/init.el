@@ -311,6 +311,20 @@
   ("C-h k" . helpful-key)
   ("C-h x" . helpful-command))
 
+(use-package pulsar
+  :ensure t
+  :config
+  (pulsar-global-mode 1)
+  :bind
+  ("C-c h p" . pulsar-pulse-line)
+  ("C-c h h" . pulsar-highlight-line)
+  :custom
+  (pulsar-pulse t)
+  (pulsar-delay 0.055)
+  (pulsar-iterations 10)
+  (pulsar-face 'pulsar-magenta)
+  (pulsar-highlight-face 'pulsar-yellow))
+
 ;;;; * Benchmark
 (use-package benchmark-init
   :ensure t
