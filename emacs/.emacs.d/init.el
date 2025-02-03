@@ -302,6 +302,14 @@
   (setq project-vc-ignores '("target/" "bin/" "obj/")
 	project-vc-extra-root-markers '("README.org"
 					"README.md")))
+(use-package helpful
+  :ensure t
+  :bind
+  ("C-c C-d" . helpful-at-point)
+  ("C-h f" . helpful-callable)
+  ("C-h v" . helpful-variable)
+  ("C-h k" . helpful-key)
+  ("C-h x" . helpful-command))
 
 ;;;; * Benchmark
 (use-package benchmark-init
@@ -338,8 +346,8 @@
 (mini-echo-define-segment "persp"
   "Get the current perspective list"
   :setup (persp-init-frame)
-  :fetch (mini-echo-segment--extract (frame-parameter nil 'persp--modestring))
-)
+  :fetch (mini-echo-segment--extract (frame-parameter nil 'persp--modestring)))
+
 (use-package mini-echo
   :ensure t
   :config
@@ -655,6 +663,7 @@
   (org-clock-persistence-insinuate)
   :hook
   (org-mode-hook . (lambda () (variable-pitch-mode 1)))
+  (org-mode-hook . (lambda () (org-indent-mode -1)))
   (org-agenda-after-show-hook . (lambda () (org-agenda-to-appt t)))
   (after-save-hook . (lambda () (when (eq major-mode 'org-mode) (org-agenda-to-appt t)))))
 
@@ -1055,25 +1064,6 @@
   :ensure t
   :hook (prog-mode . text-mode))
 
-(use-package pulsic
-  :init
-  (unless (package-installed-p 'pulsic)
-    (package-vc-install
-     '(pulsic :vc-backend Git
-              :url "https://github.com/ichernyshovvv/pulsic.el")))
-  :config
-  (pulsic-mode 1)
-  :custom
-  (pulsic-duration 0.5)
-  (pulsic-predicate
-   (lambda ()
-     (not
-      (or (memq last-command
-                '( chloe-clock-in-dwim chloe-clock-in
-                   indent-for-tab-command))
-          (derived-mode-p 'telega-chat-mode 'enlight-mode)
-          (minibufferp))))))
-
 (use-package spacious-padding
   :ensure t
   :config (spacious-padding-mode 1))
@@ -1099,29 +1089,40 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(copilot-enable-predicates nil)
+ '(copilot-log-max 1000)
  '(dashboard-agenda-prefix-format " %i %-12:c %s ")
  '(dashboard-agenda-sort-strategy '(time-up))
  '(dashboard-projects-switch-function 'project-switch-project)
  '(mode-line-format
-   '("%e" mode-line-front-space (:propertize ("" "λ:") display (min-width (6.0)))
+   '("%e" mode-line-front-space
+     (:propertize
+      ("" "λ:")
+      display
+      (min-width
+       (6.0)))
      mode-line-frame-identification mode-line-buffer-identification "    "
-     (project-mode-line project-mode-line-format) (vc-mode vc-mode) "  "
-     mode-line-modes mode-line-misc-info mode-line-end-spaces))
+     (project-mode-line project-mode-line-format)
+     (vc-mode vc-mode)
+     "  " mode-line-modes mode-line-misc-info mode-line-end-spaces))
  '(org-agenda-include-diary t)
  '(org-agenda-start-on-weekday 0)
  '(org-habit-show-all-today nil)
  '(org-modules
-   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc
-	     ol-mhe ol-rmail ol-w3m))
+   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe ol-rmail ol-w3m))
  '(package-vc-selected-packages
    '((pulsic :vc-backend Git :url "https://github.com/ichernyshovvv/pulsic.el")))
  '(project-switch-commands
-   '((gui/fzf-find-file "Find file" 102) (gui/fzf-grep "Find regexp" 114)
-     (project-find-dir "Find directory" nil) (magit-project-status "Magit" 109)))
+   '((gui/fzf-find-file "Find file" 102)
+     (gui/fzf-grep "Find regexp" 114)
+     (project-find-dir "Find directory" nil)
+     (magit-project-status "Magit" 109)))
+ '(spacious-padding-widths
+   '(:internal-border-width 15 :header-line-width 4 :mode-line-width 6 :tab-width 4 :right-divider-width 1 :scroll-bar-width 8 :fringe-width 8))
  '(sudoku-level 'easy))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(mini-echo-project ((t (:inherit mini-echo-char-info)))))
