@@ -35,7 +35,6 @@
       '(("melpa" . "https://melpa.org/packages/")
 	("elpa" . "https://elpa.gnu.org/packages/")))
 
-(package-initialize)
 (use-package diminish :ensure t :after use-package)
 
 ;;;; * Guimacs
@@ -43,7 +42,8 @@
   "Quit Emacs interactively."
   (interactive)
   (save-buffers-kill-terminal t))
-
+(defun gui/webkit-google ()
+  "Open a Web")
 (define-minor-mode gui/init-mode
   "Minor mode for the init buffer."
   :init-value t
@@ -287,6 +287,12 @@
   (add-to-list 'vertico-multiform-categories
 	       '(jinx grid (vertico-grid-annotate . 20))))
 
+(use-package consult
+  :ensure t
+  :bind
+  ("C-x b" . consult-buffer)
+  ("C-s" . consult-line))
+
 (use-package vertico-directory
   :after vertico
   :ensure nil
@@ -514,7 +520,8 @@
   :ensure t
   :defer t
   :bind (("C-c f f" . fzf)
-	 ("C-c f r" . fzf-grep))
+	 ("C-c f r" . fzf-grep)
+	 ("C-c f g" . fzf-git-files))
   :custom
   (fzf/args "--ansi --color dark --print-query --margin=1,0 --no-hscroll")
   (fzf/executable "fzf")
