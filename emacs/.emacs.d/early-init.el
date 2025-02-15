@@ -14,6 +14,7 @@
 
 (setq frame-resize-pixelwise t)
 (tool-bar-mode -1)                      ; All these tools are in the menu-bar anyway
+(scroll-bar-mode -1)
 (setq default-frame-alist '((fullscreen . maximized)
 
                             ;; You can turn off scroll bars by uncommenting these lines:
