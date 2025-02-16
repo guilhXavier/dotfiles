@@ -10,6 +10,7 @@ If the new path's directories does not exist, create them."
     (make-directory (file-name-directory backupFilePath) (file-name-directory backupFilePath))
     backupFilePath))
 
+
 (use-package emacs
   :custom
   (browse-url-new-window-flag t)
@@ -49,7 +50,7 @@ If the new path's directories does not exist, create them."
   (show-trailing-whitespace nil)
   (display-line-numbers-width 3)
   :config
-  (load-theme 'modus-vivendi)
+  (load-theme 'modus-vivendi :no-confirm)
   (set-frame-font "Input Mono")
   (blink-cursor-mode -1)
   (cua-mode 1)
@@ -73,11 +74,6 @@ If the new path's directories does not exist, create them."
   (prog-mode-hook . electric-pair-mode)
   (text-mode-hook . auto-fill-mode)
   (flymake-after-save-hook . eglot-format-buffer))
-
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode 1))
 
 (use-package delsel
   :ensure nil
@@ -120,7 +116,9 @@ If the new path's directories does not exist, create them."
   :hook (emacs-startup-hook . global-eldoc-mode))
 
 (use-package eldoc-box
-  :ensure t)
+  :ensure t
+  :hook
+  (prog-mode-hook . eldoc-box-hover-at-point-mode))
 
 (use-package project
   :ensure nil
@@ -187,7 +185,7 @@ If the new path's directories does not exist, create them."
   :ensure t
   :demand t
   :after avy
-  :bind (("C-c e" . embark-act))
+  :bind ("C-." . embark-act)
   :init
   (defun bedrock/avy-action-embark (pt)
     (unwind-protect
@@ -197,10 +195,17 @@ If the new path's directories does not exist, create them."
       (select-window
        (cdr (ring-ref avy-ring 0))))
     t)
-  (setf (alist-get ?. avy-dispatch-alist) 'bedrock/avy-action-embark))
+  (setf (alist-get ?. avy-dispatch-alist) 'bedrock/avy-action-embark)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
 
 (use-package embark-consult
-  :ensure t)
+  :ensure t
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package perspective
   :ensure t

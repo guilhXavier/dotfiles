@@ -51,11 +51,7 @@
   (interactive)
   (persp-switch "copilot")
   (copilot-chat-display)
-  (advice-add 'gui/move-to-point-max :after #'copilot-chat--write-buffer)
-  (advice-add 'copilot-chat-prompt-send :after #'gui/switch-focus-copilot-chat-buffer)
-  (if (get-buffer copilot-chat--prompt-buffer)
-      (pop-to-buffer copilot-chat--prompt-buffer)
-    (message "Copilot chat prompt not available")))
+  (advice-add 'gui/move-to-point-max :after #'copilot-chat--write-buffer))
 
 (defun gui/fzf-find-file (&optional dir)
   "Find a file using fzf in a project root."
@@ -74,6 +70,7 @@
 (load-file "~/SAPDevelop/dotfiles/emacs/.emacs.d/modules/theming.el")
 
 (load-file "~/SAPDevelop/dotfiles/emacs/.emacs.d/modules/completion.el")
+
 (mini-echo-define-segment "persp"
   "Get the current perspective list"
   :setup (persp-init-frame)

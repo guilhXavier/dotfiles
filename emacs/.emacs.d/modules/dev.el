@@ -131,8 +131,7 @@
   (copilot-node-executable "/Users/i568723/.nvm/versions/node/v20.17.0/bin/node"))
 
 (use-package copilot-chat
-  :straight (:host github :repo "chep/copilot-chat.el" :files ("*.el"))
-  :after (request))
+  :ensure t)
 
 (use-package symbol-overlay
   :ensure t
