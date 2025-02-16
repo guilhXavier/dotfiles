@@ -9,18 +9,13 @@
 (use-package dash
   :ensure t)
 
-(mini-echo-define-segment "persp"
-  "Get the current perspective list"
-  :setup (persp-init-frame)
-  :fetch (mini-echo-segment--extract (frame-parameter nil 'persp--modestring)))
-
 (use-package mini-echo
   :ensure t
   :config
   (mini-echo-mode)
-  :custom
-  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flymake" "persp")
-			       :short ("buffer-name" "flymake"))))
+  :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flymake" "persp")
+					      :short ("buffer-name" "flymake"))))
+
 (use-package nerd-icons
   :ensure t
   :defer t)
@@ -42,6 +37,19 @@
   :ensure t
   :defer t
   :hook (dired-mode . nerd-icons-dired-mode))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :defer t
+  :hook (prog-mode-hook . rainbow-delimiters-mode))
+
+(use-package colorful-mode
+  :ensure t
+  :hook (prog-mode . text-mode))
+
+(use-package spacious-padding
+  :ensure t
+  :config (spacious-padding-mode 1))
 
 (provide 'theming)
 ;;; theming.el ends here

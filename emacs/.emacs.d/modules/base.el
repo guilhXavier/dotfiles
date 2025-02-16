@@ -69,6 +69,8 @@ If the new path's directories does not exist, create them."
   (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete)
   :hook
   (prog-mode-hook . display-line-numbers-mode)
+  (before-save-hook . delete-trailing-whitespace)
+  (prog-mode-hook . electric-pair-mode)
   (text-mode-hook . auto-fill-mode)
   (flymake-after-save-hook . eglot-format-buffer))
 
@@ -222,6 +224,47 @@ If the new path's directories does not exist, create them."
 	     rotate-frame-clockwise
 	     rotate-frame-anticlockwise)
   :bind (("C-c r" . rotate-frame-clockwise)))
+
+(use-package magit
+  :ensure t
+  :custom
+  (magit-define-global-key-bindings 'recommended)
+  (magit-refresh-status-buffer nil)
+  (auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
+  (magit-diff-highlight-indentation nil)
+  (magit-diff-highlight-trailing nil)
+  (magit-diff-paint-whitespace nil)
+  (magit-diff-highlight-hunk-body nil)
+  (magit-diff-refine-hunk nil)
+  :config
+  (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
+  (remove-hook 'server-switch-hook 'magit-commit-diff)
+  (remove-hook 'with-editor-filter-visit-hook 'magit-commit-diff))
+
+(use-package undo-fu
+  :ensure t
+  :defer t
+  :diminish
+  :bind
+  ("M-z" . undo-fu-only-undo)
+  ("M-Z" . undo-fu-only-redo))
+
+(use-package expand-region
+  :ensure t
+  :defer t
+  :diminish
+  :bind ("C-=" . er/expand-region))
+
+(use-package git-gutter
+  :ensure t
+  :defer t
+  :diminish
+  :hook (prog-mode-hook . git-gutter-mode)
+  :config
+  (setq git-gutter:update-interval 0.02))
+
+(use-package git-gutter-fringe
+  :ensure t)
 
 (provide 'base)
 ;;; base.el ends here
