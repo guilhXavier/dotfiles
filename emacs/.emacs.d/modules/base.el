@@ -116,7 +116,11 @@ If the new path's directories does not exist, create them."
   :hook (after-init-hook . exec-path-from-shell-initialize))
 
 (use-package eldoc
-  :diminish eldoc-mode)
+  :ensure t
+  :hook (emacs-startup-hook . global-eldoc-mode))
+
+(use-package eldoc-box
+  :ensure t)
 
 (use-package project
   :ensure nil
@@ -239,7 +243,9 @@ If the new path's directories does not exist, create them."
   :config
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (remove-hook 'server-switch-hook 'magit-commit-diff)
-  (remove-hook 'with-editor-filter-visit-hook 'magit-commit-diff))
+  (remove-hook 'with-editor-filter-visit-hook 'magit-commit-diff)
+  :bind-keymap
+  ("C-c g" . magit-mode-map))
 
 (use-package undo-fu
   :ensure t
