@@ -54,13 +54,6 @@
 	      ("C-c l s" . org-store-link)
 	      ("C-c l i" . org-insert-link-global))))
 
-  (use-package org-superstar
-  :ensure t
-  :defer t
-  :custom
-  (org-superstar-headline-bullets-list  '("α" "β" "γ" "δ" "ε"))
-  :hook (org-mode-hook . org-superstar-mode))
-
 (use-package hl-todo
   :ensure t
   :defer t
