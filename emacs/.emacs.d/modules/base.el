@@ -77,6 +77,22 @@ If the new path's directories does not exist, create them."
   (text-mode-hook . auto-fill-mode)
   (flymake-after-save-hook . eglot-format-buffer))
 
+(use-package winum
+  :ensure t
+  :custom
+  (winum-auto-setup-mode-line nil)
+  :config
+  (winum-mode 1)
+  (add-to-list 'pulsar-pulse-functions 'winum-select-window-1)
+  (add-to-list 'pulsar-pulse-functions 'winum-select-window-2)
+  (add-to-list 'pulsar-pulse-functions 'winum-select-window-3)
+  (add-to-list 'pulsar-pulse-functions 'winum-select-window-4)
+  :bind (:map winum-keymap
+	      ("M-1" . winum-select-window-1)
+	      ("M-2" . winum-select-window-2)
+	      ("M-3" . winum-select-window-3)
+	      ("M-4" . winum-select-window-4)))
+
 (use-package modus-themes
   :ensure t
   :custom
@@ -196,6 +212,7 @@ If the new path's directories does not exist, create them."
 
 (use-package avy
   :ensure t
+  :demand t
   :bind (("C-c a l" . avy-goto-line)
 	 ("C-c a w" . avy-goto-word-0)
 	 ("C-c a t" . avy-goto-char-timer)))
