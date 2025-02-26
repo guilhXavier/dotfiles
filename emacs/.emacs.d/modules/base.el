@@ -68,6 +68,8 @@ If the new path's directories does not exist, create them."
 		 (display-buffer-no-window)
 		 (allow-no-window . t)))
   (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete)
+  :bind
+  ("C-x C-r" . pop-global-mark)
   :hook
   (prog-mode-hook . display-line-numbers-mode)
   (before-save-hook . delete-trailing-whitespace)
@@ -194,7 +196,6 @@ If the new path's directories does not exist, create them."
 
 (use-package avy
   :ensure t
-  :defer t
   :bind (("C-c a l" . avy-goto-line)
 	 ("C-c a w" . avy-goto-word-0)
 	 ("C-c a t" . avy-goto-char-timer)))
@@ -228,11 +229,9 @@ If the new path's directories does not exist, create them."
 (use-package perspective
   :ensure t
   :demand t
-  :bind
-  ("C-x C-b" . persp-list-buffers)
   :custom
   (persp-modestring-dividers '("(" ") " ","))
-  (persp-mode-prefix-key (kbd "C-c M-p"))
+  (persp-mode-prefix-key (kbd "C-c p"))
   :config
   (persp-mode))
 
@@ -276,8 +275,8 @@ If the new path's directories does not exist, create them."
   :defer t
   :diminish
   :bind
-  ("M-z" . undo-fu-only-undo)
-  ("M-Z" . undo-fu-only-redo))
+  ("s-z" . undo-fu-only-undo)
+  ("s-Z" . undo-fu-only-redo))
 
 (use-package expand-region
   :ensure t

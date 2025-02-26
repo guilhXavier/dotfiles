@@ -13,6 +13,9 @@
 
 (use-package consult
   :ensure t
+  :config
+  (consult-customize consult--source-buffer :hidden t :default nil)
+  (add-to-list 'consult-buffer-sources persp-consult-source)
   :bind
   (("C-x b" . consult-buffer)
   ("C-s" . consult-line)
