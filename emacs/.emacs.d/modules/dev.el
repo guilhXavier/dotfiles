@@ -1,6 +1,16 @@
 ;;; dev.el --- Dev configs
 ;;; Commentary:
 ;;; Code:
+(defun gui/symbol-overlay-dwim ()
+  "DWIM symbol overlay.
+If invoked on an already highlighted symbol, remove it.
+If not, add it to highlight list."
+  (interactive)
+  (let ((overlays (symbol-overlay-get-list 0 (thing-at-point 'symbol))))
+    (if overlays
+	(symbol-overlay-remove-all))
+    (symbol-overlay-put)))
+
 (use-package eglot
   :pin elpa
   :ensure t
@@ -138,7 +148,7 @@
   :defer t
   :diminish
   :hook (prog-mode-hook . symbol-overlay-mode)
-  :bind (("M-i" . symbol-overlay-put)
+  :bind (("M-i" . gui/symbol-overlay-dwim)
 	 ("M-n" . symbol-overlay-switch-forward)
 	 ("M-p" . symbol-overlay-switch-backward)))
 
