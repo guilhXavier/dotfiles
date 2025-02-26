@@ -13,6 +13,7 @@ If the new path's directories does not exist, create them."
 
 (use-package emacs
   :custom
+  (ring-bell-function 'ignore)
   (browse-url-new-window-flag t)
   (diary-file "~/Notes/diary")
   (vc-follow-symlinks t)
@@ -39,7 +40,6 @@ If the new path's directories does not exist, create them."
   (completion--cycle-threshold 1)
   (completions-detailed t)
   (tab-always-indent 'complete)
-  (completion-styles '(basic initials substring))
   (completion-auto-help 'always)
   (completions-max-height 20)
   (completions-detailed t)
@@ -74,6 +74,20 @@ If the new path's directories does not exist, create them."
   (prog-mode-hook . electric-pair-mode)
   (text-mode-hook . auto-fill-mode)
   (flymake-after-save-hook . eglot-format-buffer))
+
+(use-package modus-themes
+  :ensure t
+  :custom
+  (modus-themes-completions '((matches . (extrabold underline))
+			      (selection . (semibold italic)))))
+
+(use-package compile
+  :bind
+  ("C-x c" . compile)
+  :custom
+  (compilation-scroll-output t)
+  (compilation-auto-jump-to-first-error t)
+  (compilation-max-output-line-length nil))
 
 (use-package delsel
   :ensure nil
@@ -150,6 +164,10 @@ If the new path's directories does not exist, create them."
   (pulsar-face 'pulsar-magenta)
   (pulsar-highlight-face 'pulsar-yellow))
 
+(use-package ansi-color
+  :hook
+  (compilation-filter-hook . ansi-color-compilation-filter))
+
 (use-package fzf
   :ensure t
   :defer t
@@ -209,18 +227,18 @@ If the new path's directories does not exist, create them."
 
 (use-package perspective
   :ensure t
-  :defer t
+  :demand t
   :bind
   ("C-x C-b" . persp-list-buffers)
   :custom
   (persp-modestring-dividers '("(" ") " ","))
   (persp-mode-prefix-key (kbd "C-c M-p"))
-  :init
+  :config
   (persp-mode))
 
 (use-package golden-ratio
   :ensure t
-  :init
+  :config
   (golden-ratio-mode 1))
 
 (use-package transpose-frame
@@ -237,6 +255,7 @@ If the new path's directories does not exist, create them."
 (use-package magit
   :ensure t
   :custom
+  (magit-process-finish-apply-ansi-colors t)
   (magit-define-global-key-bindings 'recommended)
   (magit-refresh-status-buffer nil)
   (auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)

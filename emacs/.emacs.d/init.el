@@ -65,28 +65,28 @@
   (let ((default-directory (project-root (project-current t))))
     (fzf-git-grep)))
 
-(load-file "~/SAPDevelop/dotfiles/emacs/.emacs.d/modules/base.el")
+(load-file (expand-file-name "modules/base.el" user-emacs-directory))
 
-(load-file "~/SAPDevelop/dotfiles/emacs/.emacs.d/modules/theming.el")
+(load-file (expand-file-name "modules/theming.el" user-emacs-directory))
 
-(load-file "~/SAPDevelop/dotfiles/emacs/.emacs.d/modules/completion.el")
+(load-file (expand-file-name "modules/completion.el" user-emacs-directory))
 
 (mini-echo-define-segment "persp"
   "Get the current perspective list"
-  :setup (persp-init-frame)
+  :setup (persp-init-frame (selected-frame))
   :fetch (mini-echo-segment--extract (frame-parameter nil 'persp--modestring)))
 
 (use-package mini-echo
+  :after perspective
   :ensure t
   :config
   (mini-echo-mode)
   :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flymake" "persp")
 					      :short ("buffer-name" "flymake"))))
 
-(load-file "~/SAPDevelop/dotfiles/emacs/.emacs.d/modules/gorg.el")
+(load-file (expand-file-name "modules/gorg.el" user-emacs-directory))
 
-
-(load-file "~/SAPDevelop/dotfiles/emacs/.emacs.d/modules/dev.el")
+(load-file (expand-file-name "modules/dev.el" user-emacs-directory))
 
 ;;;; * Custom variables
 (custom-set-variables

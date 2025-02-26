@@ -34,10 +34,10 @@
 (use-package orderless
   :ensure t
   :custom
-  (completion-styles '(partial-completion orderless flex))
+  (completion-styles '(basic partial-completion orderless))
   (completion-category-defaults nil)
   (read-file-name-completion-ignore-case t)
-  (completion-category-overrides '((file (styles partial-completion))
+  (completion-category-overrides '((file (styles partial-completion basic))
 				   (minibuffer (initial orderless)))))
 (use-package savehist
   :ensure t
