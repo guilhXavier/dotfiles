@@ -87,6 +87,10 @@ If the new path's directories does not exist, create them."
   (add-to-list 'pulsar-pulse-functions 'winum-select-window-2)
   (add-to-list 'pulsar-pulse-functions 'winum-select-window-3)
   (add-to-list 'pulsar-pulse-functions 'winum-select-window-4)
+  (add-to-list 'golden-ratio-extra-commands 'winum-select-window-1)
+  (add-to-list 'golden-ratio-extra-commands 'winum-select-window-2)
+  (add-to-list 'golden-ratio-extra-commands 'winum-select-window-3)
+  (add-to-list 'golden-ratio-extra-commands 'winum-select-window-4)
   :bind (:map winum-keymap
 	      ("M-1" . winum-select-window-1)
 	      ("M-2" . winum-select-window-2)

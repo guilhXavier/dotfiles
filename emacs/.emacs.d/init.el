@@ -76,12 +76,16 @@
   :setup (persp-init-frame (selected-frame))
   :fetch (mini-echo-segment--extract (frame-parameter nil 'persp--modestring)))
 
+(mini-echo-define-segment "winum"
+  "Get the current window's number"
+  :fetch (mini-echo-segment--print (winum-get-number-string (selected-window))))
+
 (use-package mini-echo
   :after perspective
   :ensure t
   :config
   (mini-echo-mode)
-  :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flymake" "persp")
+  :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flymake" "persp" "winum")
 					      :short ("buffer-name" "flymake"))))
 
 (load-file (expand-file-name "modules/gorg.el" user-emacs-directory))
