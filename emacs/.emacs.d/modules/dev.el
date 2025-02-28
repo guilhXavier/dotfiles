@@ -17,15 +17,15 @@ If not, add it to highlight list."
   :defer t
   :config
   (fset #'jsonrpc--log-event #'ignore)
-(add-to-list 'eglot-server-programs
-             `((js-mode js-ts-mode tsx-ts-mode typescript-ts-mode typescript-mode)
-               .
-               ("typescript-language-server" "--stdio"
-                :initializationOptions
-                (:preferences
-                 (:includeInlayParameterNameHints "all"
-                  :includeInlayParameterNameHintsWhenArgumentMatchesName t
-                  :includeInlayFunctionParameterTypeHints t)))))
+  (add-to-list 'eglot-server-programs
+               `((js-mode js-ts-mode tsx-ts-mode typescript-ts-mode typescript-mode)
+		 .
+		 ("typescript-language-server" "--stdio"
+                  :initializationOptions
+                  (:preferences
+                   (:includeInlayParameterNameHints "all"
+		    :includeInlayParameterNameHintsWhenArgumentMatchesName t
+		    :includeInlayFunctionParameterTypeHints t)))))
   :custom
   (read-process-output-max (* 1024 1024))
   (eldoc-echo-area-use-multiline-p)

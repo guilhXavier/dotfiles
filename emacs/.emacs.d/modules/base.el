@@ -10,6 +10,11 @@ If the new path's directories does not exist, create them."
     (make-directory (file-name-directory backupFilePath) (file-name-directory backupFilePath))
     backupFilePath))
 
+(defun gui/embark-deadgrep ()
+  "Search in the current directory with deadgrep."
+  (interactive)
+  (let ((default-directory (project-root (project-current))))
+    (deadgrep (thing-at-point 'symbol))))
 
 (use-package emacs
   :custom
@@ -225,7 +230,9 @@ If the new path's directories does not exist, create them."
   :ensure t
   :demand t
   :after avy
-  :bind ("C-." . embark-act)
+  :bind (("C-." . embark-act)
+	 :map embark-general-map
+	 ("R" . gui/embark-deadgrep))
   :init
   (defun bedrock/avy-action-embark (pt)
     (unwind-protect
