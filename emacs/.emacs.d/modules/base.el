@@ -50,7 +50,6 @@ If the new path's directories does not exist, create them."
   (show-trailing-whitespace nil)
   (display-line-numbers-width 3)
   :config
-  (load-theme 'modus-vivendi :no-confirm)
   (set-frame-font "Input Mono")
   (blink-cursor-mode -1)
   (cua-mode 1)
@@ -101,7 +100,9 @@ If the new path's directories does not exist, create them."
   :ensure t
   :custom
   (modus-themes-completions '((matches . (extrabold underline))
-			      (selection . (semibold italic)))))
+			      (selection . (semibold italic))))
+  :config
+  (load-theme 'modus-vivendi t))
 
 (use-package compile
   :bind
@@ -144,7 +145,6 @@ If the new path's directories does not exist, create them."
 
 (use-package exec-path-from-shell
   :ensure t
-  :defer t
   :hook (after-init-hook . exec-path-from-shell-initialize))
 
 (use-package eldoc

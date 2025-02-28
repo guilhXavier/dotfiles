@@ -10,6 +10,11 @@
 
 (require 'ls-lisp)
 
+(require 'benchmark)
+
+(benchmark-init/activate)
+(add-hook 'after-init-hook 'benchmark-init/deactivate)
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -65,11 +70,16 @@
   (let ((default-directory (project-root (project-current t))))
     (fzf-git-grep)))
 
-(load-file (expand-file-name "modules/base.el" user-emacs-directory))
+(defun gui/load-with-benchmark (file)
+  "Load FILE and print the time it took."
+  (let ((time (benchmark-run (load-file file))))
+  (message "Loading %s took %.2f seconds" file (car time))))
 
-(load-file (expand-file-name "modules/theming.el" user-emacs-directory))
+(gui/load-with-benchmark (expand-file-name "modules/base.el" user-emacs-directory))
 
-(load-file (expand-file-name "modules/completion.el" user-emacs-directory))
+(gui/load-with-benchmark (expand-file-name "modules/theming.el" user-emacs-directory))
+
+(gui/load-with-benchmark (expand-file-name "modules/completion.el" user-emacs-directory))
 
 (mini-echo-define-segment "persp"
   "Get the current perspective list"
@@ -88,9 +98,9 @@
   :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flymake" "persp" "winum")
 					      :short ("buffer-name" "flymake"))))
 
-(load-file (expand-file-name "modules/gorg.el" user-emacs-directory))
+(gui/load-with-benchmark (expand-file-name "modules/gorg.el" user-emacs-directory))
 
-(load-file (expand-file-name "modules/dev.el" user-emacs-directory))
+(gui/load-with-benchmark (expand-file-name "modules/dev.el" user-emacs-directory))
 
 ;;;; * Custom variables
 (custom-set-variables

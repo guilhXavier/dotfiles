@@ -17,6 +17,15 @@ If not, add it to highlight list."
   :defer t
   :config
   (fset #'jsonrpc--log-event #'ignore)
+(add-to-list 'eglot-server-programs
+             `((js-mode js-ts-mode tsx-ts-mode typescript-ts-mode typescript-mode)
+               .
+               ("typescript-language-server" "--stdio"
+                :initializationOptions
+                (:preferences
+                 (:includeInlayParameterNameHints "all"
+                  :includeInlayParameterNameHintsWhenArgumentMatchesName t
+                  :includeInlayFunctionParameterTypeHints t)))))
   :custom
   (read-process-output-max (* 1024 1024))
   (eldoc-echo-area-use-multiline-p)
@@ -32,7 +41,8 @@ If not, add it to highlight list."
 	 (json-ts-mode-hook . prettier-mode)
 	 (go-ts-mode-hook . eglot-ensure)
 	 (latex-mode-hook . eglot-ensure)
-	 (eglot-managed-mode-hook . eldoc-box-hover-at-point-mode))
+	 (eglot-managed-mode-hook . eldoc-box-hover-at-point-mode)
+	 (eglot-managed-mode-hook . eglot-inlay-hints-mode))
   :bind (("C-c l b" . eglot-format-buffer)
 	 ("C-c l a" . eglot-code-actions)
 	 ("C-c l e" . eglot-reconnect)
@@ -60,6 +70,7 @@ If not, add it to highlight list."
   :diminish)
 
 (use-package css-in-js-mode
+  :defer t
   :straight '(css-in-js-mode :type git :host github :repo "orzechowskid/tree-sitter-css-in-js"))
 
 (use-package dape
@@ -141,6 +152,7 @@ If not, add it to highlight list."
   (copilot-node-executable "/Users/i568723/.nvm/versions/node/v20.17.0/bin/node"))
 
 (use-package copilot-chat
+  :defer t
   :ensure t)
 
 (use-package symbol-overlay
