@@ -12,6 +12,8 @@
 
 (require 'benchmark)
 
+(setopt use-package-compute-statistics t)
+
 (benchmark-init/activate)
 (add-hook 'after-init-hook 'benchmark-init/deactivate)
 
@@ -95,8 +97,8 @@
   :ensure t
   :config
   (mini-echo-mode)
-  :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flymake" "persp" "winum")
-					      :short ("buffer-name" "flymake"))))
+  :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flycheck" "persp" "winum")
+					      :short ("buffer-name" "flycheck"))))
 
 (gui/load-with-benchmark (expand-file-name "modules/gorg.el" user-emacs-directory))
 

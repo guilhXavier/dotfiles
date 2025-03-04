@@ -29,7 +29,7 @@ If the new path's directories does not exist, create them."
   (confirm-kill-processes nil)
   (use-short-answers t)
   (read-process-output-max (* 1024 1024))
-  (mac-command-modified 'meta)
+  (mac-command-modifier 'super)
   (create-lockfiles nil)
   (insert-directory-program "gls")
   (warning-minimum-level :error)
@@ -40,7 +40,6 @@ If the new path's directories does not exist, create them."
   (auto-revert-interval 5)
   (auto-revert-check-vc-info t)
   (setence-end-double-space nil)
-  (make-backup-file-name-function 'bedrock--backup-file-name)
   (enable-recursive-minibuffers t)
   (completion--cycle-threshold 1)
   (completions-detailed t)
@@ -96,10 +95,10 @@ If the new path's directories does not exist, create them."
   (add-to-list 'golden-ratio-extra-commands 'winum-select-window-3)
   (add-to-list 'golden-ratio-extra-commands 'winum-select-window-4)
   :bind (:map winum-keymap
-	      ("M-1" . winum-select-window-1)
-	      ("M-2" . winum-select-window-2)
-	      ("M-3" . winum-select-window-3)
-	      ("M-4" . winum-select-window-4)))
+	      ("s-1" . winum-select-window-1)
+	      ("s-2" . winum-select-window-2)
+	      ("s-3" . winum-select-window-3)
+	      ("s-4" . winum-select-window-4)))
 
 (use-package modus-themes
   :ensure t

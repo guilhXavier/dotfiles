@@ -48,6 +48,12 @@ If not, add it to highlight list."
 	 ("C-c l e" . eglot-reconnect)
 	 ("C-c l r" . eglot-rename)))
 
+(use-package flycheck-eglot
+  :ensure t
+  :after (flycheck eglot)
+  :config
+  (global-flycheck-eglot-mode 1))
+
 (use-package yaml-pro
   :ensure t
   :defer t)
@@ -124,6 +130,14 @@ If not, add it to highlight list."
 	      (treesit-install-language-grammar lang)
 	      (message "`%s' parser was installed." lang)
 	      (sit-for 0.75)))))
+
+(use-package cider
+  :ensure t
+  :defer t)
+
+(use-package clojure-ts-mode
+  :ensure t
+  :defer t)
 
 (use-package editorconfig
   :ensure t

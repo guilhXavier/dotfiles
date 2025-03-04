@@ -13,8 +13,8 @@
   :ensure t
   :config
   (mini-echo-mode)
-  :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flymake" "persp")
-					      :short ("buffer-name" "flymake"))))
+  :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flycheck" "persp")
+					      :short ("buffer-name" "flycheck"))))
 
 (use-package nerd-icons
   :ensure t

@@ -3,6 +3,7 @@
 ;;; Code:
 (use-package org
   :ensure nil
+  :defer t
   :config
   (setf (cdr (assoc 'file org-link-frame-setup)) 'find-file)
   :custom
