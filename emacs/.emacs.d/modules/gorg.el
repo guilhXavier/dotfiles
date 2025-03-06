@@ -6,6 +6,24 @@
   :defer t
   :config
   (setf (cdr (assoc 'file org-link-frame-setup)) 'find-file)
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  (let* ((font '(:font "ETBembo"))
+	 (base-font-color (face-foreground 'default nil 'default))
+	 (headline `(:inherit default :weight bold :foreground ,base-font-color)))
+    (custom-theme-set-faces 'user
+		      `(org-level-8 ((t (,@headline ,@font))))
+		      `(org-level-7 ((t (,@headline ,@font))))
+		      `(org-level-6 ((t (,@headline ,@font))))
+		      `(org-level-5 ((t (,@headline ,@font))))
+		      `(org-level-4 ((t (,@headline ,@font :height 1.1))))
+		      `(org-level-3 ((t (,@headline ,@font :height 1.25))))
+		      `(org-level-2 ((t (,@headline ,@font :height 1.5))))
+		      `(org-level-1 ((t (,@headline ,@font :height 1.75))))
+		      `(org-document-title ((t (,@headline ,@font :height 2.0 :underline nil))))))
+  (custom-theme-set-faces 'user '(variable-pitch ((t (:family "ETBembo" :height 160))))
+		    '(fixed-pitch ((t (:family "Input Mono" :height 140)))))
   :custom
   (org-export-with-smart-quotes t)
   (org-directory "~/Beorg/")
@@ -50,10 +68,17 @@
   (org-startup-indented t)
   (dictionary-server "dict.org")
   (dictionary-use-single-buffer t)
-  :hook (org-mode-hook . visual-line-mode)
+  :hook
+  (org-mode-hook . visual-line-mode)
+  (org-mode-hook . variable-pitch-mode)
   :bind (:map global-map
 	      ("C-c l s" . org-store-link)
 	      ("C-c l i" . org-insert-link-global))))
+
+(use-package org-bullets
+  :ensure t
+  :defer t
+  :hook (org-mode-hook . org-bullets-mode))
 
 (use-package hl-todo
   :ensure t
