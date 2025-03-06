@@ -21,6 +21,7 @@
   ("C-s" . consult-line)
   ("C-c g" . consult-ripgrep)
   ("C-c o" . consult-outline)
+  ("C-x r b" . consult-bookmark)
   :map isearch-mode-map
   ("M-s e" . consult-isearch-history)
   ("M-s l" . consult-line)))

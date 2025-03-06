@@ -73,6 +73,8 @@ If the new path's directories does not exist, create them."
   (keymap-set minibuffer-mode-map "TAB" 'minibuffer-complete)
   :bind
   ("C-x C-r" . pop-global-mark)
+  ("C-s-f" . forward-word)
+  ("C-s-b" . backward-word)
   :hook
   (prog-mode-hook . display-line-numbers-mode)
   (before-save-hook . delete-trailing-whitespace)
@@ -95,10 +97,10 @@ If the new path's directories does not exist, create them."
   (add-to-list 'golden-ratio-extra-commands 'winum-select-window-3)
   (add-to-list 'golden-ratio-extra-commands 'winum-select-window-4)
   :bind (:map winum-keymap
-	      ("s-1" . winum-select-window-1)
-	      ("s-2" . winum-select-window-2)
-	      ("s-3" . winum-select-window-3)
-	      ("s-4" . winum-select-window-4)))
+	      ("M-1" . winum-select-window-1)
+	      ("M-2" . winum-select-window-2)
+	      ("M-3" . winum-select-window-3)
+	      ("M-4" . winum-select-window-4)))
 
 (use-package modus-themes
   :ensure t
