@@ -83,6 +83,10 @@
 
 (gui/load-with-benchmark (expand-file-name "modules/completion.el" user-emacs-directory))
 
+(mini-echo-define-segment "god"
+  "Get the current god mode status"
+  :fetch (mini-echo-segment--print (if god-local-mode "G" "E") 'mini-echo-project))
+
 (mini-echo-define-segment "persp"
   "Get the current perspective list"
   :setup (persp-init-frame (selected-frame))
@@ -97,7 +101,7 @@
   :ensure t
   :config
   (mini-echo-mode)
-  :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flycheck" "persp" "winum")
+  :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flycheck" "persp" "winum" "god")
 					      :short ("buffer-name" "flycheck"))))
 
 (gui/load-with-benchmark (expand-file-name "modules/gorg.el" user-emacs-directory))

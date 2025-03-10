@@ -55,6 +55,7 @@ If the new path's directories does not exist, create them."
   (display-line-numbers-width 3)
   :config
   (set-frame-font "Input Mono")
+  (auto-save-visited-mode 1)
   (blink-cursor-mode -1)
   (cua-mode 1)
   (windmove-default-keybindings 'control)
@@ -81,6 +82,14 @@ If the new path's directories does not exist, create them."
   (prog-mode-hook . electric-pair-mode)
   (text-mode-hook . auto-fill-mode)
   (flymake-after-save-hook . eglot-format-buffer))
+
+(use-package god-mode
+  :ensure t
+  :demand t
+  :config
+  (god-mode)
+  :bind
+  ("<escape>" . god-local-mode))
 
 (use-package winum
   :ensure t
