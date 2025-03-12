@@ -48,12 +48,6 @@ If not, add it to highlight list."
 	 ("C-c l e" . eglot-reconnect)
 	 ("C-c l r" . eglot-rename)))
 
-(use-package flycheck-eglot
-  :ensure t
-  :after (flycheck eglot)
-  :config
-  (global-flycheck-eglot-mode 1))
-
 (use-package yaml-pro
   :ensure t
   :defer t)

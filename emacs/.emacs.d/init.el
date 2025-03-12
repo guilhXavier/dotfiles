@@ -101,8 +101,8 @@
   :ensure t
   :config
   (mini-echo-mode)
-  :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flycheck" "persp" "winum" "god")
-					      :short ("buffer-name" "flycheck"))))
+  :custom  (mini-echo-persistent-rule '(:long ("major-mode" "shrink-path" "vcs" "flymake" "persp" "winum" "god")
+					      :short ("buffer-name" "flymake"))))
 
 (gui/load-with-benchmark (expand-file-name "modules/gorg.el" user-emacs-directory))
 
