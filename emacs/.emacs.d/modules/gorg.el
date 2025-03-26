@@ -75,6 +75,20 @@
 	      ("C-c l s" . org-store-link)
 	      ("C-c l i" . org-insert-link-global))))
 
+(use-package denote
+  :ensure t
+  :custom
+  (denote-directory (expand-file-name "~/Beorg/"))
+  (denote-known-keywords '("emacs" "project" "homepage" "tcc"))
+  (denote-infer-keywords t)
+  (denote-sort-keywords t)
+  (denote-org-front-matter "#+title: %s\n#+date: %s\n#+filetags: %s\n#+identifier: %s\n#+author:\n#+startup: content\n")
+  :bind
+  ("C-c n n" . denote-open-or-create)
+  ("C-c n l" . denote-link-or-create)
+  ("C-c n b" . denote-link-find-file)
+  ("C-c n B" . denote-link-backlinks))
+
 (use-package org-bullets
   :ensure t
   :defer t
@@ -129,6 +143,9 @@
   :bind (:map pdf-view-mode-map
 	      ("C-s" . isearch-forward)
 	      ("C-r" . isearch-backward)))
+
+(use-package auctex
+  :ensure t)
 
 (provide 'gorg)
 ;;; gorg.el ends here

@@ -16,6 +16,12 @@ If the new path's directories does not exist, create them."
   (let ((default-directory (project-root (project-current))))
     (deadgrep (thing-at-point 'symbol))))
 
+(defun gui/god-mode-cursor-type ()
+  "Define the current color for hl-line according to god mode status."
+  (if god-local-mode
+      (setopt cursor-type 'box)
+    (setopt cursor-type 'bar)))
+
 (use-package emacs
   :custom
   (ring-bell-function 'ignore)
@@ -89,7 +95,9 @@ If the new path's directories does not exist, create them."
   :config
   (god-mode)
   :bind
-  ("<escape>" . god-local-mode))
+  ("<escape>" . god-local-mode)
+  :hook
+  (post-command-hook . gui/god-mode-cursor-type))
 
 (use-package winum
   :ensure t
