@@ -11,7 +11,7 @@
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
   (let* ((font '(:font "ETBembo"))
 	 (base-font-color (face-foreground 'default nil 'default))
-	 (headline `(:inherit default :weight bold :foreground ,base-font-color)))
+	 (headline `(:inherit default :weight bold)))
     (custom-theme-set-faces 'user
 		      `(org-level-8 ((t (,@headline ,@font))))
 		      `(org-level-7 ((t (,@headline ,@font))))
@@ -92,6 +92,7 @@
 (use-package org-bullets
   :ensure t
   :defer t
+  :custom (org-bullets-bullet-list '("α" "β" "γ" "δ" "ε"))
   :hook (org-mode-hook . org-bullets-mode))
 
 (use-package hl-todo
