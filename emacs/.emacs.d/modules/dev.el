@@ -20,7 +20,7 @@ If not, add it to highlight list."
   (add-to-list 'eglot-server-programs
                `((js-mode js-ts-mode tsx-ts-mode typescript-ts-mode typescript-mode)
 		 .
-		 ("typescript-language-server" "--stdio"
+		 ("~/.nvm/versions/node/v20.12.2/bin/typescript-language-server" "--stdio"
                   :initializationOptions
                   (:preferences
                    (:includeInlayParameterNameHints "all"
@@ -181,6 +181,17 @@ If not, add it to highlight list."
 
 (use-package flymake
   :ensure t)
+
+(use-package blamer
+  :ensure t
+  :defer 20
+  :bind (("s-i" . blamer-show-commit-info)
+	 ("C-c i" . blamer-show-posframe-commit-info))
+  :custom
+  (blamer-idle-time 0.3)
+  (blamer-min-offset 70)
+  :config
+  (global-blamer-mode 1))
 
 (provide 'dev)
 ;;; dev.el ends here
