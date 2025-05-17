@@ -68,9 +68,11 @@
   (org-startup-indented t)
   (dictionary-server "dict.org")
   (dictionary-use-single-buffer t)
-  :hook
-  (org-mode-hook . visual-line-mode)
-  (org-mode-hook . variable-pitch-mode)
+  :hook ((org-mode-hook . org-indent-mode)
+	 (org-mode-hook . org-display-inline-images)
+	 (org-mode-hook . org-num-mode)
+	 (org-mode-hook . visual-line-mode)
+	 (org-mode-hook . variable-pitch-mode))
   :bind (:map global-map
 	      ("C-c l s" . org-store-link)
 	      ("C-c l i" . org-insert-link-global))))
@@ -93,7 +95,12 @@
   :ensure t
   :defer t
   :custom (org-bullets-bullet-list '("α" "β" "γ" "δ" "ε"))
-  :hook (org-mode-hook . org-bullets-mode))
+  :hook ((org-mode-hook . org-indent-mode)
+	 (org-mode-hook . org-display-inline-images)
+	 (org-mode-hook . org-num-mode)
+	 (org-mode-hook . visual-line-mode)
+	 (org-mode-hook . variable-pitch-mode)
+	 (org-mode-hook . org-bullets-mode)))
 
 (use-package hl-todo
   :ensure t

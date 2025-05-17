@@ -60,7 +60,7 @@ If the new path's directories does not exist, create them."
   (show-trailing-whitespace nil)
   (display-line-numbers-width 3)
   :config
-  (set-frame-font "Input Mono")
+  (set-frame-font "Input Mono-12")
   (auto-save-visited-mode 1)
   (blink-cursor-mode -1)
   (cua-mode 1)

@@ -190,6 +190,7 @@ If not, add it to highlight list."
   :custom
   (blamer-idle-time 0.3)
   (blamer-min-offset 70)
+  (blamer-commit-formatter "%s")
   :config
   (global-blamer-mode 1))
 
