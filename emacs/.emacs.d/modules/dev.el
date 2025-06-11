@@ -182,17 +182,6 @@ If not, add it to highlight list."
 (use-package flymake
   :ensure t)
 
-(use-package blamer
-  :ensure t
-  :defer 20
-  :bind (("s-i" . blamer-show-commit-info)
-	 ("C-c i" . blamer-show-posframe-commit-info))
-  :custom
-  (blamer-idle-time 0.3)
-  (blamer-min-offset 70)
-  (blamer-commit-formatter "%s")
-  :config
-  (global-blamer-mode 1))
 
 (provide 'dev)
 ;;; dev.el ends here

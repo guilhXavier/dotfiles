@@ -27,6 +27,8 @@ If the new path's directories does not exist, create them."
   (ring-bell-function 'ignore)
   (browse-url-new-window-flag t)
   (diary-file "~/Notes/diary")
+  (indent-tabs-mode nil)
+  (tab-width 4)
   (vc-follow-symlinks t)
   (initial-major-mode 'fundamental-mode)
   (initial-scratch-message "Guimacs")
@@ -60,7 +62,7 @@ If the new path's directories does not exist, create them."
   (show-trailing-whitespace nil)
   (display-line-numbers-width 3)
   :config
-  (set-frame-font "Input Mono-12")
+  (set-frame-font "Caskaydia Cove-12")
   (auto-save-visited-mode 1)
   (blink-cursor-mode -1)
   (cua-mode 1)
@@ -73,6 +75,7 @@ If the new path's directories does not exist, create them."
   (delete-selection-mode t)
   (global-hl-line-mode 1)
   (pixel-scroll-precision-mode 1)
+  (which-key-mode 1)
   (add-to-list 'display-buffer-alist
                '("\\`\\*\\(Warnings\\|Compile-Log\\|Fancy Diary Entries\\)\\*\\'"
 		 (display-buffer-no-window)
@@ -281,10 +284,14 @@ If the new path's directories does not exist, create them."
   :config
   (persp-mode))
 
-(use-package golden-ratio
+(use-package zoom
   :ensure t
+  :custom
+  (zoom-size '(0.618 . 0.618)) ; Golden ratio
+  (zoom-ignore-buffer-names '(" *which-key*"))
+  (zoom-ignored-buffer-name-regexps '("^*calc"))
   :config
-  (golden-ratio-mode 1))
+  (zoom-mode 1))
 
 (use-package transpose-frame
   :ensure t
