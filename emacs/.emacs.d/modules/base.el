@@ -37,7 +37,8 @@ If the new path's directories does not exist, create them."
   (confirm-kill-processes nil)
   (use-short-answers t)
   (read-process-output-max (* 1024 1024))
-  (mac-command-modifier 'super)
+  (mac-command-modifier 'meta)
+  (mac-option-modifier 'super)
   (create-lockfiles nil)
   (insert-directory-program "gls")
   (warning-minimum-level :error)
@@ -101,6 +102,11 @@ If the new path's directories does not exist, create them."
   ("<escape>" . god-local-mode)
   :hook
   (post-command-hook . gui/god-mode-cursor-type))
+
+(use-package shell-command-x
+  :ensure t
+  :config
+  (shell-command-x-mode 1))
 
 (use-package winum
   :ensure t
@@ -243,17 +249,18 @@ If the new path's directories does not exist, create them."
 (use-package avy
   :ensure t
   :demand t
-  :bind (("C-c a l" . avy-goto-line)
-	 ("C-c a w" . avy-goto-word-0)
-	 ("C-c a t" . avy-goto-char-timer)))
+  :bind
+  (("C-c a l" . avy-goto-line)
+   ("C-c a w" . avy-goto-word-0)
+   ("C-c a t" . avy-goto-char-timer)))
 
 (use-package embark
   :ensure t
   :demand t
   :after avy
   :bind (("C-." . embark-act)
-	 :map embark-general-map
-	 ("R" . gui/embark-deadgrep))
+	     :map embark-general-map
+	     ("R" . gui/embark-deadgrep))
   :init
   (defun bedrock/avy-action-embark (pt)
     (unwind-protect
@@ -328,8 +335,8 @@ If the new path's directories does not exist, create them."
   :defer t
   :diminish
   :bind
-  ("s-z" . undo-fu-only-undo)
-  ("s-Z" . undo-fu-only-redo))
+  ("M-z" . undo-fu-only-undo)
+  ("M-Z" . undo-fu-only-redo))
 
 (use-package expand-region
   :ensure t

@@ -1,6 +1,10 @@
 ;;; dev.el --- Dev configs
 ;;; Commentary:
 ;;; Code:
+(defun gui/advice-compilation-filter (f proc string)
+  "Advice for `compilation-filter' to use `xterm-color' for ANSI color codes."
+  (funcall f proc (xterm-color-filter string)))
+
 (defun gui/symbol-overlay-dwim ()
   "DWIM symbol overlay.
 If invoked on an already highlighted symbol, remove it.
@@ -19,38 +23,38 @@ If not, add it to highlight list."
   (fset #'jsonrpc--log-event #'ignore)
   (add-to-list 'eglot-server-programs
                `((js-mode js-ts-mode tsx-ts-mode typescript-ts-mode typescript-mode)
-		 .
-		 ("~/.nvm/versions/node/v20.12.2/bin/typescript-language-server" "--stdio"
+		         .
+		         ("~/.nvm/versions/node/v20.12.2/bin/typescript-language-server" "--stdio"
                   :initializationOptions
                   (:preferences
                    (:includeInlayParameterNameHints "all"
-		    :includeInlayParameterNameHintsWhenArgumentMatchesName t
-		    :includeInlayFunctionParameterTypeHints t)))))
+		                                            :includeInlayParameterNameHintsWhenArgumentMatchesName t
+		                                            :includeInlayFunctionParameterTypeHints t)))))
   :custom
   (read-process-output-max (* 1024 1024))
   (eldoc-echo-area-use-multiline-p)
   (eglot-autoshutdown)
   (eglot-send-changes-idle-time 0.1)
   :hook ((c-ts-mode-hook . eglot-ensure)
-	 (css-ts-mode-hook . eglot-ensure)
-	 (html-mode-hook . eglot-ensure)
-	 (js-base-mode-hook . eglot-ensure)
-	 (tsx-ts-mode-hook . eglot-ensure)
-	 (tsx-ts-mode-hook . prettier-mode)
-	 (css-ts-mode-hook . prettier-mode)
-	 (json-ts-mode-hook . prettier-mode)
-	 (go-ts-mode-hook . eglot-ensure)
-	 (latex-mode-hook . eglot-ensure)
-	 (eglot-managed-mode-hook . eldoc-box-hover-at-point-mode)
-	 (eglot-managed-mode-hook . eglot-inlay-hints-mode))
+	     (css-ts-mode-hook . eglot-ensure)
+	     (html-mode-hook . eglot-ensure)
+	     (js-base-mode-hook . eglot-ensure)
+	     (tsx-ts-mode-hook . eglot-ensure)
+	     (tsx-ts-mode-hook . prettier-mode)
+	     (css-ts-mode-hook . prettier-mode)
+	     (json-ts-mode-hook . prettier-mode)
+	     (go-ts-mode-hook . eglot-ensure)
+	     (latex-mode-hook . eglot-ensure)
+	     (eglot-managed-mode-hook . eldoc-box-hover-at-point-mode)
+	     (eglot-managed-mode-hook . eglot-inlay-hints-mode))
   :bind (("C-c l b" . eglot-format-buffer)
-	 ("C-c l a" . eglot-code-actions)
-	 ("C-c l e" . eglot-reconnect)
-	 ("C-c l r" . eglot-rename)))
+	     ("C-c l a" . eglot-code-actions)
+	     ("C-c l e" . eglot-reconnect)
+	     ("C-c l r" . eglot-rename)))
 
-(use-package yaml-pro
+(use-package conf-mode
   :ensure t
-  :defer t)
+  :mode ("\\.ya?ml\\'" . conf-mode))
 
 (use-package package-lint
   :ensure t
@@ -182,6 +186,23 @@ If not, add it to highlight list."
 (use-package flymake
   :ensure t)
 
+(use-package xterm-color
+  :ensure t
+  :custom
+  (compilation-environment '("TERM=xterm-256color"))
+  (comint-output-filter-functions
+   (remove 'ansi-color-process-output
+           comint-output-filter-functions))
+  (compilation-scroll-output t)
+  :config
+  (advice-add 'compilation-filter :around #'gui/advice-compilation-filter)
+  :hook
+  (shell-mode-hook . (lambda ()
+                       (font-lock-mode -1)
+                       (make-local-variable 'font-lock-function)
+                       (setq font-lock-function (lambda (_) nil))
+                       (add-hook 'comint-preoutput-filter-functions
+                                 'xterm-color-filter nil t))))
 
 (provide 'dev)
 ;;; dev.el ends here

@@ -148,7 +148,8 @@
      (magit-project-status "Magit" 109)))
  '(spacious-padding-widths
    '(:internal-border-width 15 :header-line-width 4 :mode-line-width 6 :tab-width 4 :right-divider-width 1 :scroll-bar-width 8 :fringe-width 8))
- '(sudoku-level 'easy))
+ '(sudoku-level 'easy)
+ '(which-key-side-window-max-height 0.1))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
