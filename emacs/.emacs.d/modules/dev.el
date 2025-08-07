@@ -15,6 +15,14 @@ If not, add it to highlight list."
 	(symbol-overlay-remove-all))
     (symbol-overlay-put)))
 
+(defun gui/eglot-capf-with-yasnippet ()
+  "Use `eglot-completion-at-point' with `yasnippet-capf'."
+  (setq-local completion-at-point-functions
+              (list 
+	           (cape-capf-super
+		        #'eglot-completion-at-point
+		        #'yasnippet-capf))))
+
 (use-package eglot
   :pin elpa
   :ensure t
@@ -24,7 +32,7 @@ If not, add it to highlight list."
   (add-to-list 'eglot-server-programs
                `((js-mode js-ts-mode tsx-ts-mode typescript-ts-mode typescript-mode)
 		         .
-		         ("~/.nvm/versions/node/v20.12.2/bin/typescript-language-server" "--stdio"
+		         ("~/.local/state/fnm_multishells/73526_1753288954055/bin/typescript-language-server" "--stdio"
                   :initializationOptions
                   (:preferences
                    (:includeInlayParameterNameHints "all"
@@ -41,16 +49,34 @@ If not, add it to highlight list."
 	     (js-base-mode-hook . eglot-ensure)
 	     (tsx-ts-mode-hook . eglot-ensure)
 	     (tsx-ts-mode-hook . prettier-mode)
+         (typescript-ts-mode-hook . eglot-ensure)
 	     (css-ts-mode-hook . prettier-mode)
 	     (json-ts-mode-hook . prettier-mode)
 	     (go-ts-mode-hook . eglot-ensure)
 	     (latex-mode-hook . eglot-ensure)
 	     (eglot-managed-mode-hook . eldoc-box-hover-at-point-mode)
-	     (eglot-managed-mode-hook . eglot-inlay-hints-mode))
+	     (eglot-managed-mode-hook . eglot-inlay-hints-mode)
+         (before-save-hook . eglot-format-buffer)
+         (eglot-managed-mode-hook . gui/eglot-capf-with-yasnippet))
   :bind (("C-c l b" . eglot-format-buffer)
 	     ("C-c l a" . eglot-code-actions)
 	     ("C-c l e" . eglot-reconnect)
 	     ("C-c l r" . eglot-rename)))
+
+(use-package yasnippet
+  :ensure t
+  :diminish
+  :config
+  (yas-global-mode 1)
+  (setq yas-triggers-in-field t)
+  :hook
+  (prog-mode-hook . yas-minor-mode))
+
+(use-package yasnippet-capf
+  :ensure t
+  :after yasnippet
+  :config
+  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 (use-package conf-mode
   :ensure t
@@ -161,7 +187,7 @@ If not, add it to highlight list."
 	 ("[tab]" . copilot-accept-completion)
 	 ("TAB" . copilot-accept-completion))
   :custom
-  (copilot-node-executable "/Users/i568723/.nvm/versions/node/v20.17.0/bin/node"))
+  (copilot-node-executable "/Users/i568723/.local/state/fnm_multishells/73376_1753288905522/bin/node"))
 
 (use-package copilot-chat
   :defer t
@@ -189,7 +215,7 @@ If not, add it to highlight list."
 (use-package xterm-color
   :ensure t
   :custom
-  (compilation-environment '("TERM=xterm-256color"))
+  (compilation-environment '("TERM=ansi"))
   (comint-output-filter-functions
    (remove 'ansi-color-process-output
            comint-output-filter-functions))
@@ -197,7 +223,7 @@ If not, add it to highlight list."
   :config
   (advice-add 'compilation-filter :around #'gui/advice-compilation-filter)
   :hook
-  (shell-mode-hook . (lambda ()
+  (shell-command-mode-hook . (lambda ()
                        (font-lock-mode -1)
                        (make-local-variable 'font-lock-function)
                        (setq font-lock-function (lambda (_) nil))

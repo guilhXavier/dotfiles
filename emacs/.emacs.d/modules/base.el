@@ -218,10 +218,6 @@ If the new path's directories does not exist, create them."
   (pulsar-face 'pulsar-magenta)
   (pulsar-highlight-face 'pulsar-yellow))
 
-(use-package ansi-color
-  :hook
-  (compilation-filter-hook . ansi-color-compilation-filter))
-
 (use-package fzf
   :ensure t
   :defer t

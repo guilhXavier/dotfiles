@@ -10,12 +10,7 @@
 
 (require 'ls-lisp)
 
-(require 'benchmark)
-
 (setopt use-package-compute-statistics t)
-
-(benchmark-init/activate)
-(add-hook 'after-init-hook 'benchmark-init/deactivate)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -121,8 +116,6 @@
  '(dashboard-agenda-prefix-format " %i %-12:c %s ")
  '(dashboard-agenda-sort-strategy '(time-up))
  '(dashboard-projects-switch-function 'project-switch-project)
- '(exec-path
-   '("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/opt/homebrew/Cellar/emacs-plus@29/29.4/libexec/emacs/29.4/aarch64-apple-darwin23.6.0" "/opt/homebrew/bin/"))
  '(mode-line-format
    '("%e" mode-line-front-space
      (:propertize
